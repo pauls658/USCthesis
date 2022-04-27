@@ -1,0 +1,48 @@
+\begin{tikzpicture}
+        \begin{axis}[
+            xmin = -5, xmax = 3,
+            ymin = -1.2, ymax = 2.5,
+            xtick distance = 10,
+            ytick distance = 10,
+            %grid = both,
+            %minor tick num = 1,
+            %major grid style = {lightgray},
+            %minor grid style = {lightgray!25},
+            width = \linewidth,
+            height = 0.75\linewidth,
+            xticklabel=\empty,yticklabel=\empty,
+            minor tick num=0,
+%            major tick num=0,
+%            hide axis,
+            axis lines = middle,
+            legend cell align = {left},
+%            legend pos = north west,
+			set layers=standard,
+	        legend to name=grouplegend,
+	        legend entries={{$ 0.5 x ( 1 + \tanh{( \sqrt{2 / \pi } (x + 0.044715
+	        x ^{3} ) )} ) $ \\ (GeLU)},
+	        	{$ min(1, max(x, -1)) $ (Hard Tanh)},
+	        	{$ 1 - e^{-e^{x}} $ (Log-Log)},
+	        	{$ x * \sigma(x) $ (Swish)},},
+        	legend style={nodes={scale=1.75, transform shape},font=\scriptsize,
+        	draw=none,fill=white,align=left},
+        ]
+            \addplot[actfunc, cyan] {0.5*x * ( 1 + tanh(sqrt(2/pi) * (x+
+            	0.044715 * (x ^3) ) ) )};
+            \addplot[actfunc, purple] {min(max(-1, x), 1)};
+            \addplot[actfunc, green] {1 - exp(-exp(x))};
+            \addplot[actfunc, blue] {x * (1 / (1 + exp(-x)))};
+
+			\coordinate (leg) at (rel axis cs:-0.1,1);
+
+%            \legend{
+%             {$ 0.5 x ( 1 + \tanh{ \sqrt{2 / \pi } (x + 0.044715 x ^{3} ) } ) $
+%              \\ (GeLU)},
+%             {$ min(1, max(x, -1)) $ (Hard Tanh)},
+%             $ 1 - e^{-e^{x}} $ (Log-Log),
+%    	     $ x * \sigma(x) $ (Swish),
+%                }
+        \end{axis}
+        \node[anchor= north west] at
+        (leg){\pgfplotslegendfromname{grouplegend}};
+\end{tikzpicture}

@@ -1,0 +1,51 @@
+﻿\begin{tikzpicture}
+    \begin{axis}[
+        height = 7.3cm,
+        width = 11cm,
+        axis on top = true,
+        axis x line = bottom,
+        axis y line = left,
+        x axis line style = -,
+        y axis line style = -,
+        tick align = outside,
+        every tick/.append style = {
+            black,
+            thin
+        },
+%       grid = major,
+        ymin = 0.75,
+        ymax = .92,
+		xmin=1.2,
+		xmax=2.5,
+        xlabel = $Z$
+    ]
+        \addplot[
+            blue,
+            domain = -5:5,
+            samples = 100,
+        ]
+            {1/(1+exp(-x))};
+
+       \addplot[
+			name path=f,
+            blue,
+            domain = -1:3.5,
+            samples = 200,
+        ]
+            {0.643422 + 0.116101*x};
+
+	\node[label={177:{$\underset{x_1}{\rm argmin} \; c_1^ux_1 + c_2^u - \sigma(x)$}},circle,fill=red,inner sep=1pt] at (axis cs:1.8653741733024876,.865922) {};
+
+	\addplot[
+		red,
+		domain = 1.8653741733024876:2.5,
+	] {-(0.05/0.116101)*(x-1.8653741733024876) + .865922};
+	%\node at (axis cs:1.25,0.2) {$\displaystyle\int_{-1}^{3.5} c_1^ux + c_2^u$};
+    \end{axis}
+\end{tikzpicture}of=f and axis,
+        soft clip={domain=-1:3.5},
+    ];
+
+% 	\node at (axis cs:1.25,0.2) {$\displaystyle\int_{-1}^{3.5} c_1^ux + c_2^u$};
+    \end{axis}
+\end{tikzpicture}
