@@ -1,18 +1,1445 @@
-@article{10.1145/357401.357402,
-author     = {Saltzer, J. H. and Reed, D. P. and Clark, D. D.},
-title      = {End-to-End Arguments in System Design},
-year       = {1984},
-issue_date = {Nov. 1984},
-publisher  = {Association for Computing Machinery},
-address    = {New York, NY, USA},
-volume     = {2},
-number     = {4},
-issn       = {0734-2071},
-url        = {https://doi.org/10.1145/357401.357402},
-doi        = {10.1145/357401.357402},
-journal    = {ACM Trans. Comput. Syst.},
-month      = nov,
-pages      = {277--288},
-numpages   = {12},
-keywords   = {data communication, protocol design, design principles},
+@string{ECCV = "European Conference on Computer Vision"}
+@string{CVPR = "IEEE Conference on Computer Vision and Pattern Recognition"}
+@string{ICLR = "International Conference on Learning Representations"}
+@string{ICML = "International Conference on Machine Learning"}
+@string{NIPS = "Annual Conference on Neural Information Processing Systems"}
+@string{EMSOFT = "ACM/IEEE International conference on Embedded Software"}
+@string{RTAS = "IEEE Real-Time and Embedded Technology and Applications Symposium"}
+@string{RTSS = "IEEE Real-Time Systems Symposium"}
+@string{ICML = "International Conference on Machine Learning"}
+@string{ATVA = "ATVA"}
+@string{POPL = "POPL"}
+@string{PPOPP = "PPoPP"}
+@string{PLDI = "PLDI"}
+@string{OOPSLA = "OOPSLA"}
+@string{ESOP = "ESOP"}
+@string{ICSE = "ICSE"}
+@string{FSE = "FSE"}
+@string{ASE = "ASE"}
+@string{ISSTA = "ISSTA"}
+@string{CAV = "CAV"}
+@string{TACAS = "TACAS"}
+@string{STTT = "STTT"}
+@string{TCAD = "T-CAD"}
+@string{FMCAD = "FMCAD"}
+@string{DATE = "DATE"}
+@string{FORTE = "FORTE"}
+@string{ASPLOS = "ASPLOS"}
+@string{SOSP = "SOSP"}
+@string{PADTAD = "PADTAD"}
+@string{ITiCSE = "ITiCSE"}
+@string{SIGCSE = "SIGCSE"}
+@string{SPECTRUM = "IEEE Spectrum"}
+@string{RV = "RV"}
+@string{NDSS = "NDSS"}
+@string{SPIN = "SPIN"}
+@string{PODC = "PODC"}
+@string{CONCUR = "CONCUR"}
+@string{ICST = "ICST"}
+
+
+@string{FM = "International Symposium on Formal Methods"}
+@string{POPL = "ACM SIGACT-SIGPLAN Symposium on Principles of Programming Languages"}
+@string{PPOPP = "ACM SIGPLAN Symposium on Principles and Practice of Parallel Programming"}
+@string{PLDI = "ACM SIGPLAN Conference on Programming Language Design and Implementation"}
+@string{OOPSLA = "ACM SIGPLAN Conference on Object Oriented Programming, Systems, Languages, and Applications"}
+@string{ESOP = "European Symposium on Programming"}
+@string{ICSE = "International Conference on Software Engineering"}
+@string{FSE = "ACM SIGSOFT Symposium on Foundations of Software Engineering"}
+@string{ESECFSE = "ACM Joint Meeting on European Software Engineering Conference and Symposium on the Foundations of Software Engineering"}
+@string{ASE = "IEEE/ACM International Conference On Automated Software Engineering"}
+@string{ISSTA = "International Symposium on Software Testing and Analysis"}
+@string{CAV = "International Conference on Computer Aided Verification"}
+@string{TACAS = "International Conference on Tools and Algorithms for Construction and Analysis of Systems"}
+@string{STTT = "International Journal on Software Tools for Technology Transfer"}
+@string{TCAD = "IEEE Trans. on CAD of Integrated Circuits and Systems"}
+@string{FMCAD = "International Conference on Formal Methods in Computer-Aided Design"}
+@string{DATE = "Design, Automation and Test in Europe"}
+@string{FORTE = "Formal Techniques for Networked and Distributed Systems"}
+@string{ASPLOS = "International Conference on Architectural Support for Programming Languages and Operating Systems"}
+@string{SOSP = "ACM symposium on Operating Systems Principles"}
+@string{PADTAD = "Workshop on Parallel and Distributed Systems: Testing, Analysis, and Debugging"}
+@string{ITiCSE = "Annual SIGCSE Conference on Innovation and Technology in Computer Science Education"}
+@string{SIGCSE = "ACM technical symposium on Computer Science Education"}
+@string{SC = "International Conference on High Performance Computing Networking, Storage and Analysis"}
+@string{SPECTRUM = "IEEE Spectrum"}
+@string{RV = "International Conference on Runtime Verification"}
+@string{EuroSys = "European Conference on Computer Systems"}
+@string{NDSS = "Network and Distributed System Security Symposium"}
+@string{SPIN = "International SPIN Workshop on Model Checking Software"}
+@string{ATVA = "International Symposium on Automated Technology for Verification and Analysis"}
+@string{PODC = "ACM Symposium on Principles of Distributed Computing"}
+@string{CONCUR = "International Conference on Concurrency Theory"}
+@string{SAT = "International Conference on Theory and Applications of Satisfiability Testing"}
+@string{OSDI = "USENIX Symposium on Operating Systems Design and Implementation"}
+@string{VMCAI = "International Conference on Verification, Model Checking, and Abstract Interpretation"}
+@string{SAS = "International Symposium on Static Analysis"}
+@string{OPODIS = "International Conference on Principles of Distributed Systems"}
+@string{HPCA = "IEEE International Symposium On High Performance Computer Architecture"}
+@string{MICRO = "IEEE/ACM International Symposium on Microarchitecture"}
+@string{ICST = "IEEE International Conference on Software Testing, Verification and Validation"}
+@string{TSE = "IEEE Transactions on Software Engineering"}
+@string{DAC = "ACM/IEEE Design Automation Conference"}
+@string{MEMOCODE = "International Conference on Formal Methods and Models for Co-Design"}
+@string{WWW = "International World Wide Web Conference"}
+@string{DSN = "IEEE/IFIP International Conference on Dependable Systems and Networks"}
+@string{ECOOP = "European Conference on Object-Oriented Programming"}
+
+
+
+@inproceedings{CousotC77,
+	author = {Cousot, Patrick and Cousot, Radhia},
+	title = {Abstract Interpretation: A Unified Lattice Model for Static Analysis of Programs by Construction or Approximation of Fixpoints},
+	booktitle = POPL,
+	year = {1977},
+	pages = {238--252},
+        keyword = {first paper on abstract interpretation}
 }
+
+@inproceedings{CousotH78,
+	author = {Cousot, Patrick and Halbwachs, Nicolas},
+	title = {Automatic Discovery of Linear Restraints Among Variables of a Program},
+	booktitle = POPL,
+	year = {1978},
+	pages = {84--96},
+        keyword = {first paper on polyhedral abstract domain}
+}
+
+
+@inproceedings{Mine01,
+  author ={A. Min\'e},
+  title  = {The Octagon Abstract Domain},
+  booktitle = {Analysis, Slicing, and Transformation },
+  year      = {2001},
+  month     = {October},
+  pages     = {310--319},
+  keyword   = {first paper on octagon abstract domain}
+}
+
+@TECHREPORT { Mine04,
+	AUTHOR = "A. Min\'e",
+	TITLE = "Weakly Relational Numerical Abstract Domains",
+	TYPE = "Ph.D. Thesis",
+        INSTITUTION = "Computer Science Department, ENS, France" ,
+	NUMBER = "",
+        MONTH = dec,
+	YEAR = "2004"
+	}
+
+@article{RivalM07,
+	title={The trace partitioning abstract domain},
+	author={Rival, Xavier and Mauborgne, Laurent},
+	journal={ACM Transactions on Programming Languages and Systems},
+	volume={29},
+	number={5},
+	pages={26},
+	year={2007}
+}
+
+@ARTICLE{LecunBBH98,
+author={Yann Lecun and Leon Bottou and Yoshua Bengio and Patrick Haffner},
+journal={Proceedings of the IEEE},
+title={Gradient-based learning applied to document recognition},
+year={1998},
+volume={86},
+number={11},
+pages={2278-2324},
+keywords = {images from the standard MNIST dataset contains 784 pixels}
+}
+
+@inproceedings{KatzBDJK17,
+  author    = {Guy Katz and
+               Clark W. Barrett and
+               David L. Dill and
+               Kyle Julian and
+               Mykel J. Kochenderfer},
+  title     = {Reluplex: An Efficient {SMT} Solver for Verifying Deep Neural Networks},
+  booktitle = CAV,
+  pages     = {97--117},
+  year      = {2017},
+  keyword   = {Reluplex: SMT solver for verifying DNN}
+}
+
+@inproceedings{KatzHIJLLSTWZDK19,
+  author    = {Guy Katz and
+               Derek A. Huang and
+               Duligur Ibeling and
+               Kyle Julian and
+               Christopher Lazarus and
+               Rachel Lim and
+               Parth Shah and
+               Shantanu Thakoor and
+               Haoze Wu and
+               Aleksandar Zeljic and
+               David L. Dill and
+               Mykel J. Kochenderfer and
+               Clark W. Barrett},
+  title     = {The {Marabou} Framework for Verification and Analysis of Deep Neural Networks},
+  booktitle = CAV,
+  pages     = {443--452},
+  year      = {2019},
+  keyword   = {followup of Reluplex}
+}
+
+@inproceedings{ma2018deepgauge,
+	title={Deepgauge: Multi-granularity testing criteria for deep learning systems},
+	author={Ma, Lei and Juefei-Xu, Felix and Zhang, Fuyuan and Sun, Jiyuan and Xue, Minhui and Li, Bo and Chen, Chunyang and Su, Ting and Li, Li and Liu, Yang and others},
+	booktitle=ASE,
+	pages={120--131},
+	year={2018},
+	organization={ACM}
+}
+
+@inproceedings{xie2019deephunter,
+	title={DeepHunter: a coverage-guided fuzz testing framework for deep neural networks},
+	author={Xie, Xiaofei and Ma, Lei and Juefei-Xu, Felix and Xue, Minhui and Chen, Hongxu and Liu, Yang and Zhao, Jianjun and Li, Bo and Yin, Jianxiong and See, Simon},
+	booktitle={Proceedings of the 28th ACM SIGSOFT International Symposium on Software Testing and Analysis},
+	pages={146--157},
+	year={2019}
+}
+
+@article{kearfott1990algorithm,
+	title={Algorithm 681: INTBIS, a portable interval Newton/bisection package},
+	author={Kearfott, R Baker and Novoa III, Manuel},
+	journal={ACM Transactions on Mathematical Software (TOMS)},
+	volume={16},
+	number={2},
+	pages={152--157},
+	year={1990},
+	publisher={ACM}
+}
+
+@book{kearfott2013rigorous,
+	title={Rigorous global search: continuous problems},
+	author={Kearfott, R Baker},
+	volume={13},
+	year={2013},
+	publisher={Springer Science \& Business Media}
+}
+
+
+@article{SinghGPV19,
+  author    = {Gagandeep Singh and
+               Timon Gehr and
+               Markus P{\"{u}}schel and
+               Martin T. Vechev},
+  title     = {An abstract domain for certifying neural networks},
+  journal   = POPL,
+  pages     = {41:1--41:30},
+  year      = {2019}
+}
+
+@article{tjeng2019evaluating,
+	title={Evaluating robustness of neural networks with mixed integer programming},
+	author={Tjeng, Vincent and Xiao, Kai and Tedrake, Russ},
+	journal=ICLR,
+	year={2019}
+}
+
+
+@inproceedings{SinghGPV19iclr,
+  author    = {Gagandeep Singh and
+               Timon Gehr and
+               Markus P{\"{u}}schel and
+               Martin T. Vechev},
+  title     = {Boosting Robustness Certification of Neural Networks},
+  booktitle = ICLR,
+  year      = {2019},
+  keyword   = {is this the RefineZono paper?}
+}
+
+@incollection{Singh2019krelu, title = {Beyond the Single Neuron Convex Barrier for Neural Network Certification}, author = {Singh, Gagandeep and Ganvir, Rupanshu and Püschel, Markus and Vechev, Martin}, booktitle = {Advances in Neural Information Processing Systems (NeurIPS)}, year = {2019} }
+
+
+@inproceedings{FischerBDGZV19,
+  author    = {Marc Fischer and
+               Mislav Balunovic and
+               Dana Drachsler{-}Cohen and
+               Timon Gehr and
+               Ce Zhang and
+               Martin T. Vechev},
+  title     = {{DL2:} Training and Querying Neural Networks with Logic},
+  booktitle = ICML,
+  pages     = {1931--1941},
+  year      = {2019},
+  bibsource = {dblp computer science bibliography, https://dblp.org}
+}
+
+@inproceedings{MirmanGV18,
+  author    = {Matthew Mirman and
+               Timon Gehr and
+               Martin T. Vechev},
+  title     = {Differentiable Abstract Interpretation for Provably Robust Neural Networks},
+  booktitle = ICML,
+  pages     = {3575--3583},
+  year      = {2018}
+}
+
+@inproceedings{GehrMDTCV18,
+  author    = {Timon Gehr and
+               Matthew Mirman and
+               Dana Drachsler{-}Cohen and
+               Petar Tsankov and
+               Swarat Chaudhuri and
+               Martin T. Vechev},
+  title     = {{AI2:} Safety and Robustness Certification of Neural Networks with Abstract Interpretation},
+  booktitle = {{IEEE} Symposium on Security and Privacy},
+  pages     = {3--18},
+  year      = {2018}
+}
+
+@inproceedings{WangPWYJ18,
+  author    = {Shiqi Wang and
+               Kexin Pei and
+               Justin Whitehouse and
+               Junfeng Yang and
+               Suman Jana},
+  title     = {Formal Security Analysis of Neural Networks using Symbolic Intervals},
+  booktitle = {{USENIX} Security Symposium},
+  pages     = {1599--1614},
+  year      = {2018},
+  keyword   = {Reluval paper}
+}
+
+@inproceedings{WangPWYJ18nips,
+  author    = {Shiqi Wang and
+               Kexin Pei and
+               Justin Whitehouse and
+               Junfeng Yang and
+               Suman Jana},
+  title     = {Efficient Formal Safety Analysis of Neural Networks},
+  booktitle = {Annual Conference on Neural Information Processing Systems},
+  pages     = {6369--6379},
+  year      = {2018}
+}
+
+@inproceedings{HuangKWW17,
+  author    = {Xiaowei Huang and
+               Marta Kwiatkowska and
+               Sen Wang and
+               Min Wu},
+  title     = {Safety Verification of Deep Neural Networks},
+  booktitle = CAV,
+  pages     = {3--29},
+  year      = {2017}
+}
+
+@inproceedings{RuanHK18,
+  author    = {Wenjie Ruan and
+               Xiaowei Huang and
+               Marta Kwiatkowska},
+  title     = {Reachability Analysis of Deep Neural Networks with Provable Guarantees},
+  booktitle = {International Joint Conference on Artificial Intelligence},
+  pages     = {2651--2659},
+  year      = {2018}
+}
+
+@inproceedings{SunWRHKK18,
+  author    = {Youcheng Sun and
+               Min Wu and
+               Wenjie Ruan and
+               Xiaowei Huang and
+               Marta Kwiatkowska and
+               Daniel Kroening},
+  title     = {Concolic testing for deep neural networks},
+  booktitle = {Proceedings of the 33rd {ACM/IEEE} International Conference on Automated
+               Software Engineering, {ASE} 2018, Montpellier, France, September 3-7,
+               2018},
+  pages     = {109--119},
+  year      = {2018}
+}
+
+@inproceedings{WickerHK18,
+  author    = {Matthew Wicker and
+               Xiaowei Huang and
+               Marta Kwiatkowska},
+  title     = {Feature-Guided Black-Box Safety Testing of Deep Neural Networks},
+  booktitle = TACAS,
+  pages     = {408--426},
+  year      = {2018}
+}
+
+@article{SehwagWMJ19,
+  author    = {Vikash Sehwag and
+               Shiqi Wang and
+               Prateek Mittal and
+               Suman Jana},
+  title     = {Towards Compact and Robust Deep Neural Networks},
+  journal   = {CoRR},
+  volume    = {abs/1906.06110},
+  year      = {2019},
+  url       = {http://arxiv.org/abs/1906.06110},
+  archivePrefix = {arXiv},
+  eprint    = {1906.06110}
+}
+
+
+@inproceedings{GoodfellowSS15,
+  author    = {Ian J. Goodfellow and
+               Jonathon Shlens and
+               Christian Szegedy},
+  title     = {Explaining and Harnessing Adversarial Examples},
+  booktitle = ICLR,
+  year      = {2015}
+}
+
+@inproceedings{KurakinGB17a,
+  author    = {Alexey Kurakin and
+               Ian J. Goodfellow and
+               Samy Bengio},
+  title     = {Adversarial examples in the physical world},
+  booktitle = ICLR,
+  year      = {2017}
+}
+
+@inproceedings{CarliniW17,
+  author    = {Nicholas Carlini and
+               David A. Wagner},
+  title     = {Towards Evaluating the Robustness of Neural Networks},
+  booktitle = {{IEEE} Symposium on Security and Privacy},
+  pages     = {39--57},
+  year      = {2017}
+}
+
+@article{madry2017towards,
+  title={Towards deep learning models resistant to adversarial attacks},
+  author={Madry, Aleksander and Makelov, Aleksandar and Schmidt, Ludwig and Tsipras, Dimitris and Vladu, Adrian},
+  journal=ICLR,
+  year={2018}
+}
+
+@inproceedings{WengZCSHDBD18,
+  author    = {Tsui{-}Wei Weng and
+               Huan Zhang and
+               Hongge Chen and
+               Zhao Song and
+               Cho{-}Jui Hsieh and
+               Luca Daniel and
+               Duane S. Boning and
+               Inderjit S. Dhillon},
+  title     = {Towards Fast Computation of Certified Robustness for ReLU Networks},
+  booktitle = ICML,
+  pages     = {5273--5282},
+  year      = {2018}
+}
+
+@inproceedings{BastaniILVNC16,
+  author    = {Osbert Bastani and
+               Yani Ioannou and
+               Leonidas Lampropoulos and
+               Dimitrios Vytiniotis and
+               Aditya V. Nori and
+               Antonio Criminisi},
+  title     = {Measuring Neural Net Robustness with Constraints},
+  booktitle = NIPS,
+  pages     = {2613--2621},
+  year      = {2016}
+}
+
+@inproceedings{DvijothamSGMK18,
+  author    = {Krishnamurthy Dvijotham and
+               Robert Stanforth and
+               Sven Gowal and
+               Timothy A. Mann and
+               Pushmeet Kohli},
+  title     = {A Dual Approach to Scalable Verification of Deep Networks},
+  booktitle = {International Conference on Uncertainty in Artificial  Intelligence},
+  pages     = {550--559},
+  year      = {2018}
+}
+
+@inproceedings{Ehlers17,
+  author    = {R{\"{u}}diger Ehlers},
+  title     = {Formal Verification of Piece-Wise Linear Feed-Forward Neural Networks},
+  booktitle = {Automated Technology for Verification and Analysis - 15th International
+               Symposium, {ATVA} 2017, Pune, India, October 3-6, 2017, Proceedings},
+  pages     = {269--286},
+  year      = {2017}
+}
+
+@inproceedings{NguyenYC15,
+  author    = {Anh Mai Nguyen and
+               Jason Yosinski and
+               Jeff Clune},
+  title     = {Deep neural networks are easily fooled: High confidence predictions
+               for unrecognizable images},
+  booktitle = CVPR,
+  pages     = {427--436},
+  year      = {2015}
+}
+
+@inproceedings{PeiCYJ17,
+  author    = {Kexin Pei and
+               Yinzhi Cao and
+               Junfeng Yang and
+               Suman Jana},
+  title     = {DeepXplore: Automated Whitebox Testing of Deep Learning Systems},
+  booktitle = SOSP,
+  pages     = {1--18},
+  year      = {2017}
+}
+
+@inproceedings{TianPJR18,
+  author    = {Yuchi Tian and
+               Kexin Pei and
+               Suman Jana and
+               Baishakhi Ray},
+  title     = {DeepTest: Automated testing of deep-neural-network-driven autonomous cars},
+  booktitle = ICSE,
+  pages     = {303--314},
+  year      = {2018}
+}
+
+
+@inproceedings{RaghunathanSL18,
+  author    = {Aditi Raghunathan and
+               Jacob Steinhardt and
+               Percy Liang},
+  title     = {Certified Defenses against Adversarial Examples},
+  booktitle = ICLR,
+  year      = {2018}
+}
+
+@inproceedings{WongK18,
+  author    = {Eric Wong and
+               J. Zico Kolter},
+  title     = {Provable Defenses against Adversarial Examples via the Convex Outer
+               Adversarial Polytope},
+  booktitle = ICML,
+  pages     = {5283--5292},
+  year      = {2018}
+}
+
+@inproceedings{XuQE16,
+  author    = {Weilin Xu and
+               Yanjun Qi and
+               David Evans},
+  title     = {Automatically Evading Classifiers: {A} Case Study on {PDF} Malware
+               Classifiers},
+  booktitle = NDSS,
+  year      = {2016}
+}
+
+@inproceedings{Moosavi-Dezfooli16,
+  author    = {Seyed{-}Mohsen Moosavi{-}Dezfooli and
+               Alhussein Fawzi and
+               Pascal Frossard},
+  title     = {{DeepFool}: A Simple and Accurate Method to Fool Deep Neural Networks},
+  booktitle = CVPR,
+  pages     = {2574--2582},
+  year      = {2016}
+}
+
+@article{JulianKO18,
+  author    = {Kyle D. Julian and
+               Mykel J. Kochenderfer and
+               Michael P. Owen},
+  title     = {Deep Neural Network Compression for Aircraft Collision Avoidance Systems},
+  journal   = {CoRR},
+  volume    = {abs/1810.04240},
+  year      = {2018},
+  url       = {http://arxiv.org/abs/1810.04240},
+  archivePrefix = {arXiv},
+  eprint    = {1810.04240}
+}
+
+@article{JulianSJK19,
+  author    = {Kyle D. Julian and
+               Shivam Sharma and
+               Jean{-}Baptiste Jeannin and
+               Mykel J. Kochenderfer},
+  title     = {Verifying Aircraft Collision Avoidance Neural Networks Through Linear
+               Approximations of Safe Regions},
+  journal   = {CoRR},
+  volume    = {abs/1903.00762},
+  year      = {2019},
+  url       = {http://arxiv.org/abs/1903.00762},
+  archivePrefix = {arXiv},
+  eprint    = {1903.00762},
+  timestamp = {Sat, 30 Mar 2019 19:27:21 +0100},
+  biburl    = {https://dblp.org/rec/bib/journals/corr/abs-1903-00762},
+  bibsource = {dblp computer science bibliography, https://dblp.org}
+}
+
+
+@inproceedings{HanMD16,
+  author    = {Song Han and
+               Huizi Mao and
+               William J. Dally},
+  title     = {Deep Compression: Compressing Deep Neural Network with Pruning, Trained
+               Quantization and Huffman Coding},
+  booktitle = ICLR,
+  year      = {2016}
+}
+
+@inproceedings{HeLLWLH18,
+  author    = {Yihui He and
+               Ji Lin and
+               Zhijian Liu and
+               Hanrui Wang and
+               Li{-}Jia Li and
+               Song Han},
+  title     = {{AMC:} {AutoML} for Model Compression and Acceleration on Mobile Devices},
+  booktitle = ECCV,
+  pages     = {815--832},
+  year      = {2018}
+}
+
+@book{moore2009introduction,
+  title={Introduction to interval analysis},
+  author={Moore, Ramon E and Kearfott, R Baker and Cloud, Michael J},
+  volume={110},
+  year={2009},
+  publisher={Siam}
+}
+
+
+@article{bojarski2016end,
+  title={End to end learning for self-driving cars},
+  author={Bojarski, Mariusz and Del Testa, Davide and Dworakowski, Daniel and Firner, Bernhard and Flepp, Beat and Goyal, Prasoon and Jackel, Lawrence D and Monfort, Mathew and Muller, Urs and Zhang, Jiakai and others},
+  journal={arXiv preprint arXiv:1604.07316},
+  year={2016}
+}
+
+@article{odena2018tensorfuzz,
+  title={Tensorfuzz: Debugging neural networks with coverage-guided fuzzing},
+  author={Odena, Augustus and Goodfellow, Ian},
+  journal={arXiv preprint arXiv:1807.10875},
+  year={2018}
+}
+
+@article{sung2018datalog,
+  title={Datalog-based scalable semantic diffing of concurrent programs},
+  author={Sung, Chungha and Lahiri, Shuvendu and Enea, Constantin and Wang, Chao},
+  journal=ASE,
+  year={2018}
+}
+
+@inproceedings{lahiri2013differential,
+  title={Differential assertion checking},
+  author={Lahiri, Shuvendu K and McMillan, Kenneth L and Sharma, Rahul and Hawblitzel, Chris},
+  booktitle={Proceedings of the 2013 9th Joint Meeting on Foundations of Software Engineering},
+  pages={345--355},
+  year={2013},
+  organization={ACM}
+}
+
+@article{szegedy2013intriguing,
+	  title={Intriguing properties of neural networks},
+	    author={Szegedy, Christian and Zaremba, Wojciech and Sutskever, Ilya and Bruna, Joan and Erhan, Dumitru and Goodfellow, Ian and Fergus, Rob},
+		  journal={arXiv preprint arXiv:1312.6199},
+		    year={2013}
+}
+
+@article{AnguitaHAR,
+	title={A Public Domain Dataset for Human Activity Recognition Using Smartphones},
+	author={Anguita, Davide and Ghio, Alessandro and Oneto, Luca and Parra, Xavier and Reyes-Ortiz, Jorge L.},
+	journal={21st European Symposium on Artificial Neural Networks, Computational Intelligence and Machine Learning},
+	year={2013}
+}
+
+
+@inproceedings{ZhangWZ12,
+  author    = {Xianyi Zhang and
+               Qian Wang and
+               Yunquan Zhang},
+  title     = {Model-driven Level 3 {BLAS} Performance Optimization on Loongson 3A
+               Processor},
+  booktitle = {18th {IEEE} International Conference on Parallel and Distributed Systems,
+               {ICPADS} 2012, Singapore, December 17-19, 2012},
+  pages     = {684--691},
+  year      = {2012}
+}
+
+@inproceedings{GopinathKPB18,
+  author    = {Divya Gopinath and
+               Guy Katz and
+               Corina S. Pasareanu and
+               Clark W. Barrett},
+  title     = {{DeepSafe}: {A} Data-Driven Approach for Assessing Robustness of Neural
+               Networks},
+  booktitle = {Automated Technology for Verification and Analysis - 16th International
+               Symposium, {ATVA} 2018, Los Angeles, CA, USA, October 7-10, 2018,
+               Proceedings},
+  pages     = {3--19},
+  year      = {2018}
+}
+
+
+@inproceedings{GopinathPWZK19,
+  author    = {Divya Gopinath and
+               Corina S. Pasareanu and
+               Kaiyuan Wang and
+               Mengshi Zhang and
+               Sarfraz Khurshid},
+  title     = {Symbolic execution for attribution and attack synthesis in neural networks},
+  booktitle = {Proceedings of the 41st International Conference on Software Engineering:
+               Companion Proceedings, {ICSE} 2019, Montreal, QC, Canada, May 25-31,
+               2019.},
+  pages     = {282--283},
+  year      = {2019}
+}
+
+
+@inproceedings{MaLLZG18,
+  author    = {Shiqing Ma and
+               Yingqi Liu and
+               Wen{-}Chuan Lee and
+               Xiangyu Zhang and
+               Ananth Grama},
+  title     = {{MODE:} automated neural network model debugging via state differential
+               analysis and input selection},
+  booktitle = {Proceedings of the 2018 {ACM} Joint Meeting on European Software Engineering
+               Conference and Symposium on the Foundations of Software Engineering,
+               {ESEC/SIGSOFT} {FSE} 2018, Lake Buena Vista, FL, USA, November 04-09,
+               2018},
+  pages     = {175--186},
+  year      = {2018}
+}
+
+@misc{arxivPaper,
+	title={ReluDiff: Differential Verification of
+	Deep Neural Networks},
+	author={Brandon Paulsen and Jingbo Wang and Chao Wang},
+	year={2020},
+	eprint={2001.03662},
+	archivePrefix={arXiv},
+	primaryClass={cs.LG},
+	url={https://arxiv.org/abs/2001.03662}
+}
+
+@inproceedings{DAC13,
+	author = {Lahiri, Shuvendu K. and McMillan, Kenneth L. and Sharma, Rahul and Hawblitzel, Chris},
+	title = {Differential Assertion Checking},
+	year = {2013},
+	isbn = {9781450322379},
+	publisher = {Association for Computing Machinery},
+	address = {New York, NY, USA},
+	url = {https://doi.org/10.1145/2491411.2491452},
+	doi = {10.1145/2491411.2491452},
+	booktitle = {Proceedings of the 2013 9th Joint Meeting on Foundations of Software Engineering},
+	pages = {345–355},
+	numpages = {11},
+	keywords = {verification, regressions, differential analysis},
+	location = {Saint Petersburg, Russia},
+	series = {ESEC/FSE 2013}
+}
+
+@inproceedings{xie2019diffchaser,
+	title={Diffchaser: Detecting disagreements for deep neural networks},
+	author={Xie, Xiaofei and Ma, Lei and Wang, Haijun and Li, Yuekang and Liu, Yang and Li, Xiaohong},
+	booktitle={Proceedings of the 28th International Joint Conference on Artificial Intelligence},
+	pages={5772--5778},
+	year={2019},
+	organization={AAAI Press}
+}
+
+@inproceedings{paulsen2020reludiff,
+	title={Reludiff: Differential verification of
+	deep neural networks},
+	author={Paulsen, Brandon and Wang, Jingbo and
+	Wang, Chao},
+	booktitle={2020 IEEE/ACM 42nd International
+	Conference on Software Engineering (ICSE)},
+	pages={714--726},
+	year={2020},
+	organization={IEEE}
+}
+
+
+@inproceedings{paulsen2020neurodiff,
+	title={NeuroDiff: scalable differential
+	verification of neural networks using
+	fine-grained approximation},
+	author={Paulsen, Brandon and Wang, Jingbo and
+	Wang, Jiawei and Wang, Chao},
+	booktitle={2020 35th IEEE/ACM International
+	Conference on Automated Software Engineering
+	(ASE)},
+	pages={784--796},
+	year={2020},
+	organization={IEEE}
+}
+
+@inproceedings{wang2018towards,
+	title={Towards understanding learning representations: To what extent do different neural networks learn the same representation},
+	author={Wang, Liwei and Hu, Lunjia and Gu, Jiayuan and Hu, Zhiqiang and Wu, Yue and He, Kun and Hopcroft, John},
+	booktitle={Advances in Neural Information Processing Systems},
+	pages={9584--9593},
+	year={2018}
+}
+
+@inproceedings{zhang2018efficient,
+	title={Efficient neural network robustness certification with general activation functions},
+	author={Zhang, Huan and Weng, Tsui-Wei and Chen, Pin-Yu and Hsieh, Cho-Jui and Daniel, Luca},
+	booktitle={Advances in neural information processing systems},
+	pages={4939--4948},
+	year={2018}
+}
+
+@article{gokulanathan2019simplifying,
+	title={Simplifying Neural Networks with the Marabou Verification Engine},
+	author={Gokulanathan, Sumathi and Feldsher, Alexander and Malca, Adi and Barrett, Clark and Katz, Guy},
+	journal={arXiv preprint arXiv:1910.12396},
+	year={2019}
+}
+
+@inproceedings{balunovic2020adversarial, title={Adversarial Training and Provable Defenses: Bridging the Gap}, author={Mislav Balunovic, Martin Vechev}, journal={International Conference on Learning Representations}, year={2020}}
+
+@inproceedings{baluta2019quantitative,
+	title={Quantitative verification of neural networks and its security applications},
+	author={Baluta, Teodora and Shen, Shiqi and Shinde, Shweta and Meel, Kuldeep S and Saxena, Prateek},
+	booktitle={Proceedings of the 2019 ACM SIGSAC Conference on Computer and Communications Security},
+	pages={1249--1264},
+	year={2019}
+}
+
+@article{rothermel1997safe,
+	title={A safe, efficient regression test selection technique},
+	author={Rothermel, Gregg and Harrold, Mary Jean},
+	journal={ACM Transactions on Software Engineering and Methodology (TOSEM)},
+	volume={6},
+	number={2},
+	pages={173--210},
+	year={1997},
+	publisher={ACM New York, NY, USA}
+}
+
+@inproceedings{GuoKW16,
+  author    = {Shengjian Guo and
+               Markus Kusano and
+               Chao Wang},
+  title     = {{Conc-iSE}: Incremental Symbolic Execution of Concurrent Software},
+  booktitle = ASE,
+  year      = {2016},
+  bibsource = {dblp computer science bibliography, http://dblp.org}
+}
+
+@inproceedings{Person11,
+ author = {Person, Suzette and Yang, Guowei and Rungta, Neha and Khurshid, Sarfraz},
+ title = {Directed Incremental Symbolic Execution},
+ booktitle = PLDI,
+ year = {2011},
+ isbn = {978-1-4503-0663-8},
+ location = {San Jose, California, USA},
+ pages = {504--515},
+ numpages = {12},
+ acmid = {1993558},
+ publisher = {ACM},
+ address = {New York, NY, USA},
+ keywords = {program differencing, software evolution, symbolic execution},
+}
+
+@inproceedings{YiYGWLZ15,
+ author = {Qiuping Yi and Zijiang Yang and Shengjian Guo and Chao Wang and Jian Liu and Chen Zhao},
+ title = {Postconditioned symbolic execution},
+ booktitle = ICST,
+ pages = {1-10},
+ year = {2015}
+}
+
+@inproceedings{NilizadehNP19,
+  author    = {Shirin Nilizadeh and
+               Yannic Noller and
+               Corina S. Pasareanu},
+  title     = {{DifFuzz}: differential fuzzing for side-channel analysis},
+  booktitle = ICSE,
+  pages     = {176--187},
+  year      = {2019},
+   bibsource = {dblp computer science bibliography, https://dblp.org}
+}
+
+@misc{reludiffrepo,
+	author = {Brandon Paulsen},
+	title = {ReluDiff-ICSE2020-Artifact},
+	year = {2020},
+	publisher = {GitHub},
+	journal = {GitHub repository},
+	howpublished = {\url{https://github.com/pauls658/ReluDiff-ICSE2020-Artifact}},
+	commit = {833596cbd964ed03df0ea13aa8a4526a25e75a5d}
+}
+
+@article{bastani2019probabilistic,
+	author = {Bastani, Osbert and Zhang, Xin and Solar-Lezama, Armando},
+	title = {Probabilistic Verification of Fairness Properties via Concentration},
+	year = {2019},
+	issue_date = {October 2019},
+	publisher = {Association for Computing Machinery},
+	address = {New York, NY, USA},
+	volume = {3},
+	number = {OOPSLA},
+	url = {https://doi.org/10.1145/3360544},
+	doi = {10.1145/3360544},
+	journal = {Proc. ACM Program. Lang.},
+	month = oct,
+	articleno = {118},
+	numpages = {27},
+	keywords = {machine learning, probabilistic verification, fairness}
+}
+
+@inproceedings{autolipra,
+	author = {Xu, Kaidi and Shi, Zhouxing and Zhang, Huan and Wang, Yihan and
+	Chang, Kai-Wei and Huang, Minlie and Kailkhura, Bhavya and Lin, Xue and
+	Hsieh, Cho-Jui},
+	booktitle = {Advances in Neural Information Processing Systems},
+	editor = {H. Larochelle and M. Ranzato and R. Hadsell and M. F. Balcan and
+	H. Lin},
+	pages = {1129--1141},
+	publisher = {Curran Associates, Inc.},
+	title = {Automatic Perturbation Analysis for Scalable Certified Robustness
+	and Beyond},
+	url =
+	{https://proceedings.neurips.cc/paper/2020/file/0cbc5671ae26f67871cb914d81ef8fc1-Paper.pdf},
+	volume = {33},
+	year = {2020}
+}
+
+@article{shi2020robustness,
+	title={Robustness verification for transformers},
+	author={Shi, Zhouxing and Zhang, Huan and Chang, Kai-Wei and Huang, Minlie
+	and Hsieh, Cho-Jui},
+	journal=ICLR,
+	year={2020}
+}
+
+@inproceedings{ko2019popqorn,
+	title={POPQORN: Quantifying robustness of recurrent neural networks},
+	author={Ko, Ching-Yun and Lyu, Zhaoyang and Weng, Lily and Daniel, Luca and
+	Wong, Ngai and Lin, Dahua},
+	booktitle={International Conference on Machine Learning},
+	pages={3468--3477},
+	year={2019},
+	organization={PMLR}
+}
+
+@inproceedings{engstrom2019exploring,
+	title={Exploring the landscape of spatial robustness},
+	author={Engstrom, Logan and Tran, Brandon and Tsipras, Dimitris and
+	Schmidt, Ludwig and Madry, Aleksander},
+	booktitle={International Conference on Machine Learning},
+	pages={1802--1811},
+	year={2019},
+	organization={PMLR}
+}
+
+@inproceedings{kanbak2018geometric,
+	title={Geometric robustness of deep networks: analysis and improvement},
+	author={Kanbak, Can and Moosavi-Dezfooli, Seyed-Mohsen and Frossard,
+	Pascal},
+	booktitle={Proceedings of the IEEE Conference on Computer Vision and
+	Pattern Recognition},
+	pages={4441--4449},
+	year={2018}
+}
+
+@article{alzantot2018generating,
+	title={Generating natural language adversarial examples},
+	author={Alzantot, Moustafa and Sharma, Yash and Elgohary, Ahmed and Ho,
+	Bo-Jhang and Srivastava, Mani and Chang, Kai-Wei},
+	journal={arXiv preprint arXiv:1804.07998},
+	year={2018}
+}
+
+@article{byrd1995limited,
+	title={A limited memory algorithm for bound constrained
+	optimization},
+	author={Byrd, Richard H and Lu, Peihuang and Nocedal, Jorge
+	and Zhu, Ciyou},
+	journal={SIAM Journal on scientific computing},
+	volume={16},
+	number={5},
+	pages={1190--1208},
+	year={1995},
+	publisher={SIAM}
+}
+
+@inproceedings{gao2013dreal,
+	title={dReal: An SMT solver for nonlinear theories over the
+	reals},
+	author={Gao, Sicun and Kong, Soonho and Clarke, Edmund M},
+	booktitle={International conference on automated deduction},
+	pages={208--214},
+	year={2013},
+	organization={Springer}
+}
+
+% GPT
+@article{radford2018improving,
+	title={Improving language understanding by generative pre-training},
+	author={Radford, Alec and Narasimhan, Karthik and Salimans, Tim and
+	Sutskever, Ilya},
+	year={2018}
+}
+
+% Googles paper on swish
+@article{ramachandran2017searching,
+	title={Searching for activation functions},
+	author={Ramachandran, Prajit and Zoph, Barret and Le, Quoc V},
+	journal={arXiv preprint arXiv:1710.05941},
+	year={2017}
+}
+
+
+% GELU paper
+@article{hendrycks2016gaussian,
+	title={Gaussian error linear units (gelus)},
+	author={Hendrycks, Dan and Gimpel, Kevin},
+	journal={arXiv preprint arXiv:1606.08415},
+	year={2016}
+}
+
+% log-log
+@inproceedings{gomes2008complementary,
+	title={Complementary log-log and probit: activation functions implemented
+	in artificial neural networks},
+	author={Gomes, Gecynalda S da S and Ludermir, Teresa B},
+	booktitle={2008 Eighth International Conference on Hybrid Intelligent
+	Systems},
+	pages={939--942},
+	year={2008},
+	organization={IEEE}
+}
+
+% sigmoid/tanh activation linear bounds
+@inproceedings{wu2021tightening,
+	title={Tightening robustness verification of
+	convolutional neural networks with fine-grained
+	linear approximation},
+	author={Wu, Yiting and Zhang, Min},
+	booktitle={Proceedings of the AAAI Conference
+	on Artificial Intelligence},
+	volume={35},
+	number={13},
+	pages={11674--11681},
+	year={2021}
+}
+
+@article{du2021cert,
+	title={{Cert-RNN}: Towards Certifying the
+	Robustness of Recurrent Neural Networks},
+	author={Du, Tianyu and Ji, Shouling and Shen,
+	Lujia and Zhang, Yao and Li, Jinfeng and Shi,
+	Jie and Fang, Chengfang and Yin, Jianwei and
+	Beyah, Raheem and Wang, Ting},
+	year={2021},
+	booktitle={Proceedings of the 2021 ACM SIGSAC Conference on Computer and
+	Communications Security}
+}
+
+@inproceedings{ryou2021scalable,
+	title={Scalable Polyhedral Verification of
+	Recurrent Neural Networks},
+	author={Ryou, Wonryong and Chen, Jiayu and
+	Balunovic, Mislav and Singh, Gagandeep and Dan,
+	Andrei and Vechev, Martin},
+	booktitle={International Conference on Computer
+	Aided Verification},
+	pages={225--248},
+	year={2021},
+	organization={Springer}
+}
+
+@inproceedings{boopathy2019cnn,
+	title={Cnn-cert: An efficient framework for
+	certifying robustness of convolutional neural
+	networks},
+	author={Boopathy, Akhilan and Weng, Tsui-Wei
+	and Chen, Pin-Yu and Liu, Sijia and Daniel,
+	Luca},
+	booktitle={Proceedings of the AAAI Conference
+	on Artificial Intelligence},
+	volume={33},
+	number={01},
+	pages={3240--3247},
+	year={2019}
+}
+
+
+@inproceedings{kong2018delta,
+	title={Delta-decision procedures for
+	exists-forall problems over the reals},
+	author={Kong, Soonho and Solar-Lezama, Armando
+	and Gao, Sicun},
+	booktitle={International Conference on Computer
+	Aided Verification},
+	pages={219--235},
+	year={2018},
+	organization={Springer}
+}
+
+@article{balunovic2019certifying,
+	title={Certifying geometric robustness of
+	neural networks},
+	author={Balunovi{\'c}, Mislav and Baader,
+	Maximilian and Singh, Gagandeep and Gehr, Timon
+	and Vechev, Martin},
+	journal={Advances in Neural Information
+	Processing Systems 32},
+	year={2019},
+	publisher={Curran}
+}
+
+@inproceedings{tran2019star,
+	title={Star-based reachability analysis of deep
+	neural networks},
+	author={Tran, Hoang-Dung and Lopez, Diago
+	Manzanas and Musau, Patrick and Yang, Xiaodong
+	and Nguyen, Luan Viet and Xiang, Weiming and
+	Johnson, Taylor T},
+	booktitle={International Symposium on Formal
+	Methods},
+	pages={670--686},
+	year={2019},
+	organization={Springer}
+}
+
+@misc{eran,
+	author = {},
+	title = {ERAN},
+	year = {2021},
+	publisher = {GitHub},
+	journal = {GitHub repository},
+	howpublished =
+	{\url{https://github.com/eth-sri/eran}},
+	commit =
+	{d60cf5767da31e7834b202fbcbb840e9c7d3ef5e}
+}
+
+@misc{Mathematica,
+	author = {Wolfram Research{,} Inc.},
+	title = {Mathematica, {V}ersion 12.3.1},
+	url = {https://www.wolfram.com/mathematica},
+	note = {Champaign, IL, 2021}
+}
+
+@inproceedings{tran2020verification,
+	title={Verification of deep convolutional
+	neural networks using imagestars},
+	author={Tran, Hoang-Dung and Bak, Stanley and
+	Xiang, Weiming and Johnson, Taylor T},
+	booktitle={International Conference on Computer
+	Aided Verification},
+	pages={18--42},
+	year={2020},
+	organization={Springer}
+}
+
+@article{mohammadinejad2020diffrnn,
+	title={DiffRNN: Differential Verification of
+	Recurrent Neural Networks},
+	author={Mohammadinejad, Sara and Paulsen,
+	Brandon and Wang, Chao and Deshmukh, Jyotirmoy
+	V},
+	journal={arXiv preprint arXiv:2007.10135},
+	year={2020}
+}
+
+@inproceedings{singla2021low,
+	title={Low curvature activations reduce
+	overfitting in adversarial training},
+	author={Singla, Vasu and Singla, Sahil and
+	Feizi, Soheil and Jacobs, David},
+	booktitle={Proceedings of the IEEE/CVF
+	International Conference on Computer Vision},
+	pages={16423--16433},
+	year={2021}
+}
+
+@inproceedings{hu2020reach,
+	title={Reach-sdp: Reachability analysis of
+	closed-loop systems with neural network
+	controllers via semidefinite programming},
+	author={Hu, Haimin and Fazlyab, Mahyar and
+	Morari, Manfred and Pappas, George J},
+	booktitle={2020 59th IEEE Conference on
+	Decision and Control (CDC)},
+	pages={5929--5934},
+	year={2020},
+	organization={IEEE}
+}
+
+@article{hochreiter1997long,
+	title={Long short-term memory},
+	author={Hochreiter, Sepp and Schmidhuber,
+	J{\"u}rgen},
+	journal={Neural computation},
+	volume={9},
+	number={8},
+	pages={1735--1780},
+	year={1997},
+	publisher={MIT Press}
+}
+
+@inproceedings{vaswani2017attention,
+	title={Attention is all you need},
+	author={Vaswani, Ashish and Shazeer, Noam and
+	Parmar, Niki and Uszkoreit, Jakob and Jones,
+	Llion and Gomez, Aidan N and Kaiser, {\L}ukasz
+	and Polosukhin, Illia},
+	booktitle={Advances in neural information
+	processing systems},
+	pages={5998--6008},
+	year={2017}
+}
+
+@misc{gurobi,
+	author = {{Gurobi Optimization, LLC}},
+	title = {{Gurobi Optimizer Reference Manual}},
+	year = 2021,
+	url = "https://www.gurobi.com"
+}
+
+@inproceedings{he2016deep,
+	title={Deep residual learning for image recognition},
+	author={He, Kaiming and Zhang, Xiangyu and Ren, Shaoqing and Sun, Jian},
+	booktitle={Proceedings of the IEEE conference on computer vision and
+	pattern recognition},
+	pages={770--778},
+	year={2016}
+}
+
+@inproceedings{redmon2016you,
+	title={You only look once: Unified, real-time object detection},
+	author={Redmon, Joseph and Divvala, Santosh and Girshick, Ross and
+	Farhadi,
+	Ali},
+	booktitle={Proceedings of the IEEE conference on computer vision and
+	pattern
+	recognition},
+	pages={779--788},
+	year={2016}
+}
+
+@article{lebbah2007efficient,
+	title={An efficient and safe framework for solving optimization problems},
+	author={Lebbah, Yahia and Michel, Claude and Rueher, Michel},
+	journal={Journal of computational and applied mathematics},
+	volume={199},
+	number={2},
+	pages={372--377},
+	year={2007},
+	publisher={Elsevier}
+}
+
+@inproceedings{trombettoni2011inner,
+	title={Inner regions and interval linearizations for global optimization},
+	author={Trombettoni, Gilles and Araya, Ignacio and Neveu, Bertrand and
+	Chabert, Gilles},
+	booktitle={Proceedings of the AAAI Conference on Artificial Intelligence},
+	volume={25},
+	number={1},
+	year={2011}
+}
+
+@article{chabert2009contractor,
+	title={Contractor programming},
+	author={Chabert, Gilles and Jaulin, Luc},
+	journal={Artificial Intelligence},
+	volume={173},
+	number={11},
+	pages={1079--1100},
+	year={2009},
+	publisher={Elsevier}
+}
+
+@article{powell1964efficient,
+	title={An efficient method for finding the minimum of a function of several
+	variables without calculating derivatives},
+	author={Powell, Michael JD},
+	journal={The computer journal},
+	volume={7},
+	number={2},
+	pages={155--162},
+	year={1964},
+	publisher={Oxford University Press}
+}
+
+@ARTICLE{2020SciPy-NMeth,
+	author  = {Virtanen, Pauli and Gommers, Ralf and Oliphant, Travis E. and
+	Haberland, Matt and Reddy, Tyler and Cournapeau, David and
+	Burovski, Evgeni and Peterson, Pearu and Weckesser, Warren and
+	Bright, Jonathan and {van der Walt}, St{\'e}fan J. and
+	Brett, Matthew and Wilson, Joshua and Millman, K. Jarrod and
+	Mayorov, Nikolay and Nelson, Andrew R. J. and Jones, Eric and
+	Kern, Robert and Larson, Eric and Carey, C J and
+	Polat, {\.I}lhan and Feng, Yu and Moore, Eric W. and
+	{VanderPlas}, Jake and Laxalde, Denis and Perktold, Josef and
+	Cimrman, Robert and Henriksen, Ian and Quintero, E. A. and
+	Harris, Charles R. and Archibald, Anne M. and
+	Ribeiro, Ant{\^o}nio H. and Pedregosa, Fabian and
+	{van Mulbregt}, Paul and {SciPy 1.0 Contributors}},
+	title   = {{{SciPy} 1.0: Fundamental Algorithms for Scientific
+	Computing in Python}},
+	journal = {Nature Methods},
+	year    = {2020},
+	volume  = {17},
+	pages   = {261--272},
+	adsurl  = {https://rdcu.be/b08Wh},
+	doi     = {10.1038/s41592-019-0686-2},
+}
+@article{misra2019mish,
+	title={Mish: A self regularized non-monotonic neural activation function},
+	author={Misra, Diganta},
+	journal={arXiv preprint arXiv:1908.08681},
+	volume={4},
+	pages={2},
+	year={2019},
+	publisher={CoRR}
+}
+
+@article{roy2019lisht,
+	title={LiSHT: Non-parametric linearly scaled hyperbolic tangent activation
+	function for neural networks},
+	author={Roy, Swalpa Kumar and Manna, Suvojit and Dubey, Shiv Ram and
+	Chaudhuri, Bidyut Baran},
+	journal={arXiv preprint arXiv:1901.05894},
+	year={2019}
+}
+@article{finkel1974quad,
+	title={Quad trees a data structure for retrieval on composite keys},
+	author={Finkel, Raphael A and Bentley, Jon Louis},
+	journal={Acta informatica},
+	volume={4},
+	number={1},
+	pages={1--9},
+	year={1974},
+	publisher={Springer}
+}
+
+@inproceedings{de2008z3,
+	title={Z3: An efficient SMT solver},
+	author={De Moura, Leonardo and Bj{\o}rner, Nikolaj},
+	booktitle={International conference on Tools and Algorithms for the
+	Construction and Analysis of Systems},
+	pages={337--340},
+	year={2008},
+	organization={Springer}
+}
+
+@article{benhamou2006continuous,
+	title={Continuous and interval constraints},
+	author={Benhamou, Fr{\'e}d{\'e}ric and Granvilliers, Laurent},
+	journal={Foundations of Artificial Intelligence},
+	volume={2},
+	pages={571--603},
+	year={2006},
+	publisher={Elsevier}
+}
+@article{krizhevsky2009learning,
+	title={Learning multiple layers of features from tiny images},
+	author={Krizhevsky, Alex and Hinton, Geoffrey and others},
+	year={2009},
+	publisher={Citeseer}
+}
+
+@article{bubeck2021universal,
+  title={A universal law of robustness via isoperimetry},
+  author={Bubeck, S{\'e}bastien and Sellke, Mark},
+  journal={Advances in Neural Information Processing Systems},
+  volume={34},
+  year={2021}
+}
+
+@inproceedings{brutzkus2019larger,
+	title={Why do larger models generalize better? A theoretical perspective via
+	the XOR problem},
+	author={Brutzkus, Alon and Globerson, Amir},
+	booktitle={International Conference on Machine Learning},
+	pages={822--830},
+	year={2019},
+	organization={PMLR}
+}
+
+@article{king1976symbolic,
+	title={Symbolic execution and program testing},
+	author={King, James C},
+	journal={Communications of the ACM},
+	volume={19},
+	number={7},
+	pages={385--394},
+	year={1976},
+	publisher={ACM New York, NY, USA}
+}
+
+@article{barthe2011secure,
+	title={Secure information flow by self-composition},
+	author={Barthe, Gilles and D'argenio, Pedro R and Rezk, Tamara},
+	journal={Mathematical Structures in Computer Science},
+	volume={21},
+	number={6},
+	pages={1207--1252},
+	year={2011},
+	publisher={Cambridge University Press}
+}
+
+@inproceedings{terauchi2005secure,
+	title={Secure information flow as a safety problem},
+	author={Terauchi, Tachio and Aiken, Alex},
+	booktitle={International Static Analysis Symposium},
+	pages={352--367},
+	year={2005},
+	organization={Springer}
+}
+@inproceedings{barthe2011relational,
+	title={Relational verification using product programs},
+	author={Barthe, Gilles and Crespo, Juan Manuel and Kunz, C{\'e}sar},
+	booktitle={International Symposium on Formal Methods},
+	pages={200--214},
+	year={2011},
+	organization={Springer}
+}
+
+@article{grigorescu2020survey,
+	title={A survey of deep learning techniques for autonomous driving},
+	author={Grigorescu, Sorin and Trasnea, Bogdan and Cocias, Tiberiu and
+	Macesanu, Gigel},
+	journal={Journal of Field Robotics},
+	volume={37},
+	number={3},
+	pages={362--386},
+	year={2020},
+	publisher={Wiley Online Library}
+}
+
+@inproceedings{caps2021,
+	title={Regularizing Action Policies for Smooth Control with
+	Reinforcement
+	Learning},
+	author={Siddharth Mysore and Bassel Mabsout and Renato Mancuso and Kate
+	Saenko},
+	journal={IEEE International Confernece on Robotics and Automation},
+	year={2021},
+}
+
+@article{tan2021toward,
+	title={Toward real-time and efficient cardiovascular monitoring for
+	COVID-19
+	patients by 5G-enabled wearable medical devices: a deep learning
+	approach},
+	author={Tan, Liang and Yu, Keping and Bashir, Ali Kashif and Cheng,
+	Xiaofan
+	and Ming, Fangpeng and Zhao, Liang and Zhou, Xiaokang},
+	journal={Neural Computing and Applications},
+	pages={1--14},
+	year={2021},
+	publisher={Springer}
+}
+
+@misc{phil_mccausland_2019, title={Self-driving uber car that hit and
+killed
+woman did not recognize that pedestrians jaywalk},
+url={https://www.nbcnews.com/tech/tech-news/self-driving-uber-car-hit-killed-woman-did-not-recognize-n1079281},
+ journal={NBCNews.com}, publisher={NBCUniversal News Group}, author={Phil
+McCausland, Phil}, year={2019}, month={Nov}}
+
+@INPROCEEDINGS{everett2021icra,
+	author={Everett, Michael and Habibi, Golnaz and How, Jonathan P.},
+	booktitle={2021 IEEE International Conference on Robotics and
+	Automation (ICRA)},
+	title={Efficient Reachability Analysis of Closed-Loop Systems with
+	Neural Network Controllers},
+	year={2021},
+	volume={},
+	number={},
+	pages={4384-4390},
+	doi={10.1109/ICRA48506.2021.9561348}}

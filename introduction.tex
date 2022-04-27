@@ -1,44 +1,276 @@
-\section{An example section}
-  \label{sec:example}
+Neural networks are being deployed in high-stakes applications due to their
+state-of-the-art performance for important problems such as image
+recognition~\cite{he2016deep}, object detection~\cite{redmon2016you}, and other
+perception-related tasks. Among the most famous examples are
+self-driving~\cite{grigorescu2020survey}, however they are being studied for
+aircraft collision avoidance~\cite{JulianKO18}, drone control~\cite{caps2021}, and
+even in medical devices~\cite{tan2021toward}.
 
-\iftoggle{thesis}{%
-  This is content that shows up only in the thesis.
-}{
-  Because of space constraints, we leave this as an exercise to the
-  reader.
-}
+While highly performant, neural networks are ``black-boxes'' -- they can have
+thousands to millions of parameters, which makes it impossible for a human to
+understand their behavior. In addition, they are also notoriously brittle. For
+example, they are known to be vulnerable to \textit{adversarial
+examples}~\cite{szegedy2013intriguing}, and generally can have undesirable
+behaviors~\cite{KatzBDJK17}. This black-box nature combined with their brittleness
+raise serious concerns about deploying them in safety-critical systems, where
+failures could lead to catastrophe. Indeed, we have already seen catastrophic
+failures in self-driving cars, some of which were directly due to failures in deep
+learning models~\cite{phil_mccausland_2019}.
 
-\iftoggle{draft}{%
-  \textsf{[\textbf{comment}: Fix such and such, revise
-  \autoref{sec:yet-another-example}.  Rewrite \autoref{ch:conclusions}.]}
-}{}
+This motivates the question: can we ensure that a given neural network behaves
+safely? In fact, finding appropriate definitions of safety has proven difficult,
+and the main safety property considered by prior work is \textit{robustness},
+i.e. proving that semantically meaningless transformations (e.g. adding a small
+amount of noise, rotation, scaling, etc.) to a neural network's
+input do not cause a change in its output. While important, robustness hardly
+covers the entire space of safety properties.
 
-\subsection{An example sub-section}
-  \label{sec:another-example}
+In this dissertation, we focus on safety properties that are
+\textit{differential} in nature. Informally, a differential safety property
+is a property of two (or more) neural networks or two (or more) executions of a
+single network. Various important safety
+properties are differential in nature, however in this dissertation, we focus on
+\textit{equivalence} as the canonical differential property. Informally,
+equivalence means showing that two neural networks produce similar outputs given
+the same input.
 
-The end-to-end princple~\cite{10.1145/357401.357402}.
+Equivalence is an important property because neural networks are often
+\textit{compressed}~\cite{HanMD16} before being deployed. Compression is a
+process that modifies the network's parameters to reduce its size (in terms of
+bytes), energy consumption, and runtime. Several works have shown that
+uncompressed (i.e. ``larger'') neural networks are more robust and generalize
+better~\cite{bubeck2021universal,brutzkus2019larger}, thus showing equivalence
+between the uncompressed and compressed model is highly desirable.
 
-\subsubsection{An example sub-sub-section}
-  \label{sec:yet-another-example}
+We define equivalence as follows: given two neural networks $ f : \mathbb{X} \to
+\mathbb{Y} $ and $ f' : \mathbb{X} \to \mathbb{Y} $ trained for the same task,
+we aim to prove that $ \forall x \in X $. $ |f'(x) - f(x)| < \epsilon $ where $ X
+\subseteq \mathbb{X} $ is an input region of interest, and $ \epsilon $ is some
+reasonably small constant. In this work, we make the assumption that $ f $ and $
+f' $ are structurally similar, differing only in the numerical values of their
+weights. This restriction is permissive enough to allow us to analyze
+state-of-the-art neural network compression techniques such as quantization and
+edge pruning~\cite{HanMD16}.
 
-This-is-an-overfull-hbox-WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW.
+To show that equivalence holds we can take one of two approaches: (1) heuristic
+based (e.g. testing, fuzzing, dynamic analysis), or (2) formal verification
+based. Along the first line, many works have been published, both for
+equivalence~\cite{xie2019diffchaser,PeiCYJ17,MaLLZG18} and other
+properties~\cite{ma2018deepgauge,xie2019deephunter,SunWRHKK18,TianPJR18,
+odena2018tensorfuzz} (mostly robustness). While these techniques
+may quickly discover a violation of the equivalence property (i.e an $ x $ where
+$ |f'(x) - f(x)| > \epsilon $), they cannot guarantee the
+absence of violations. The lack of guarantees is undesirable in general, and
+dangerous in safety-critical systems.
 
-Overfull hboxes (text going into the margins) will have a visible marker
-in the margin indicating where it's overfull.
+This motivates us to use verification because it can provide absolute guarantees
+about equivalence. While there have been many works in applying verification for
+robustness safety properties~\cite{HuangKWW17,Ehlers17,KatzHIJLLSTWZDK19,RuanHK18,
+WangPWYJ18nips,SinghGPV19iclr,MirmanGV18,GehrMDTCV18,FischerBDGZV19} (or reachable
+set computation~\cite{hu2020reach,everett2021icra}, which can be
+formulated as a robustness property), to the best of our knowledge there was no
+prior work on proving equivalence.
 
-\begin{table}
-\centering
-\begin{tabular}{lS}
-\toprule
-$x$      & \textbf{value} \\
-\midrule
-a        & 1.23           \\
-b        & 3.456          \\
-c        & 100.0002       \\
-d        & 12345.0        \\
-\bottomrule
-\end{tabular}
-\caption[short caption for the LOT]
-        {longer caption for the paper}
-\label{tbl:example}
+Before developing our own solution, we first attempted to adapt current
+verification tools to the differential setting using
+\textit{composition}~\cite{barthe2011secure,terauchi2005secure,barthe2011relational}
+ -- a standard trick in program verification to analyze multiple programs or
+executions of a single program. Specifically, for showing equivalence, we can
+create a combined network $ f''(x) = f'(x) - f(x) $ as shown in Figure~\ref{fig:}
+and then show that $ |f''(x)| < \epsilon $ using a single network verification
+tool. The most scalable tools use over-approximation techniques, and would
+compute an over-approximation $ Y $ such that $ \{f''(x) \; | \; x \in X \}
+\subseteq Y $. We could then compare $ Y $ with $ \epsilon $ to check if
+equivalence holds.
+
+Unfortunately, this approach has two major limitations. First, it is not
+\textit{accurate}. This approach computes an overly-conservative approximation of
+$ f''(x) $ because current tools are not designed specifically for proving
+equivalence (or any differential property). Practically, this means that this
+approach either cannot prove equivalence at all, or it cannot do so in a
+reasonable amount of time. Second, this approach is not general because current
+verification tools are designed to analyze ``common'' types of neural networks.
+Practically, this means that either their implementations do not support many
+state-of-the-art neural networks, or, again, they compute overly-conservative
+approximations on novel neural networks, and therefore they cannot prove useful
+properties.
+
+
+This dissertation addresses these two limitations by developing \textit{accurate}
+and \textit{general} algorithms for proving or disproving differential properties
+of neural networks -- a problem we refer to as differential verification.
+
+
+\section{Limitations of Current Verification Tools}
+We first layout in more detail the limitations of current verification tools
+because these lead to insights for how to address them. As previously mentioned,
+current tools are neither accurate nor general for differential properties. Here,
+we highlight \textit{why} this is the case.
+
+Current tools are not accurate proving equivalence because they do not have the
+ability to exploit the structural similarities of two closely related
+networks when computing their approximations. They work by computing an
+over-approximation on the values of each neuron in a neural network in a forward
+layer-by-layer fashion. While the approximations computed for the neurons in the
+early layers are relatively accurate, the approximations become overly
+conservative in the later layers as the neural network's behavior becomes
+increasingly complex. Using the composition
+approach illustrated in Figure~\ref{fig:}, these tools would compute an
+over-approximation of $ f(x) $ and $ f'(x) $  \textit{independently}, and then
+subtract them to approximate the difference of the two networks over all inputs.
+However, as previously mentioned, these approximations will be overly
+conservative for deeper networks, and thus the resulting approximation on the
+difference will be too conservative to verify reasonable equivalence properties.
+We empirically demonstrate this in Chapter~\ref{sec:reludiff}.
+
+In addition, current tools are not general because they require an expert to
+hand-craft a \textit{linear approximation} for the neural network's activation
+functions in order to accurately over-approximate the values of a given neuron.
+While there exist techniques to compute linear approximations for arbitrary
+functions without the need for an expert, such as those used in rigorous global
+optimization~\cite{ibex} and nonlinear constraint solving~\cite{gao2013dreal}, we
+show that these approaches produce overly-conservative approximations. This
+results in poor accuracy, therefore we say that current tools are not general. We
+empirically demonstrate this poor accuracy in Chapters~\ref{sec:linsyn}
+and~\ref{sec:offlinesyn}.
+
+
+\section{Hypotheses and Insights}
+Based on these limitations, we propose three testable hypotheses to improve the
+accuracy and generality of existing tools for differential properties, and we
+present insights that inspired these hypotheses. We begin with hypotheses and
+insights for improving the accuracy.
+
+\begin{table}[h]
+	\centering
+	\large
+	\begin{tabular}{|p{0.2\linewidth}|p{0.7\linewidth}|} \hline
+		\textbf{Hypothesis 1a}      &
+		Approximating the difference layer-by-layer can significantly improve
+		accuracy versus existing tools for differential properties. \\ \hline
+		\textbf{Insight 1a}        &
+		This approach begins approximating the difference \textit{before}
+		significant approximation errors accumulate. \\ \hline
+		\textbf{Hypothesis 1b}        &
+		Symbolic approximations can further improve the accuracy of the
+		layer-by-layer approximation. \\ \hline
+		\textbf{Insight 1b}        &
+		Symbols capture dependency information, allowing terms to
+		``cancel,'' and thus reducing approximation errors. \\ \hline
+	\end{tabular}
 \end{table}
+
+Hypothesis 1a suggests a new technique for approximating the difference between
+two structurally similar neural networks. Prior work independently computes
+approximations for the output neurons, e.g. $ n_{3,1} $ and $ n'_{3,1} $ in
+Figure~\ref{fig:}, and then subtracts them to approximate the difference. In our
+new technique, we first approximate the difference between the neurons of the
+first layers, e.g. we compute an approximation for $ n_{1,1} - n'_{1,1} $ and $
+n_{1,2} - n'_{1,2} $. Then we use this result to approximate $ n_{2,1} - n'_{2,1}
+$ and $ n_{2,2} - n'_{2,2} $, and repeat until the final output layer. Our
+intuition is laid out in Insight 1a.
+
+Hypothesis 1b suggests a technique for improving the accuracy of the technique
+laid out by Hypothesis 1a. Our intuition, described in Insight 1b, is inspired by
+program verification techniques such as symbolic
+execution~\cite{king1976symbolic} and abstract interpretation~\cite{CousotC77},
+which use symbols to represent inputs, resulting in more accurate approximations.
+%A prerequisite for symbolic approximations are linear approximations of the
+%neural network's activation functions, thus we develop novel linear
+%approximations for over-approximating the difference between two neurons of two
+%different networks (e.g. $ n_{2,1} - n'_{2,1} $).
+
+Our final hypothesis and insight aim to improve the generality of existing tools.
+As previously mentioned, the key challenge to obtaining accurate approximations
+lies in computing linear approximations for the neural network's activation
+functions. Prior to our work, an expert needed to hand-craft these linear
+approximations in order to be accurate, which poses significant limitations on
+the generality of existing verification tools.
+
+\begin{table}[h]
+	\centering
+	\large
+	\begin{tabular}{|p{0.2\linewidth}|p{0.7\linewidth}|} \hline
+		\textbf{Hypothesis 2}      &
+		Automatically synthesizing linear approximations for the activation
+		functions can significantly improve accuracy for general activation
+		functions. \\ \hline
+		\textbf{Insight 2}        &
+		Both our work and prior work demonstrated significant accuracy
+		improvements. \\ \hline
+	\end{tabular}
+\end{table}
+
+This hypothesis and insight follow naturally based off the results from prior
+work, which demonstrated that linear approximations of the neural network's
+activation functions are vital for accuracy.
+%To test this hypothesis, we propose
+%two novel techniques for automatically synthesizing linear approximations
+%(without  the need for an expert's input), and compare their accuracy with the
+%best alternative technique.
+
+\section{Contributions}
+This dissertation tests the above hypotheses by proposing four novel techniques
+for \textit{accurate} and \textit{general} differential verification of deep
+neural networks. The first two techniques implement the ideas suggested by
+Hypotheses 1a and 1b, which aim to improve the accuracy when approximating the
+difference between two networks. These techniques focus specifically on
+feed-forward ReLU networks. The third and fourth techniques implement the idea
+suggested by Hypothesis 2, which aims to improve the accuracy of approximations
+for non-standard neural networks. For each technique, we compare with the best
+alternative technique to test our hypotheses. Below we summarize the techniques
+and results, which make up the core contribution of this dissertation.
+
+\subsection{Approximating the Difference Layer-by-Layer}
+The first technique that we propose improves the accuracy when approximating the
+difference between two structurally similar neural networks by approximating
+their difference layer-by-layer. To implement such a technique, we make two key
+intellectual contributions. First, we formally derive equations that relate the
+intermediate computations of the two neural networks, thus allowing the
+layer-by-layer approximation. We then use \textit{interval analysis} bound these
+equations, resulting in an over-approximation on the difference between the two
+networks. Second, we develop a novel refinement technique, which can
+iteratively improve the accuracy of the computed approximation. We
+design the technique for ReLU networks, and we compare with two state-of-the-art
+(single network) verification tools. We demonstrate one to two
+orders-of-magnitude improvement in both accuracy of the approximations, and
+runtime to prove/disprove equivalence properties, thus confirming Hypothesis 1a.
+
+\subsection{Symbolic Approximations for the Difference}
+The second technique that we propose further improves the accuracy of the
+layer-by-layer approximation by using symbolic approximations. To implement this
+technique, we make two more intellectual contributions. First, we develop a novel
+linear approximation for the difference between two neurons, which allows us to
+maintain symbols in the intervals. Second, we also propose a technique to
+judiciously create new symbolic variables that represent the intermediate neurons
+of the two networks. We compare this symbolic approach with our first technique
+and demonstrate further improvements in both accuracy and runtime, thus
+confirming Hypothesis 1b.
+
+\subsection{Online Synthesis of Linear Approximations}
+The third technique that we propose improves the accuracy of approximations for
+neural networks with non-standard activation functions (thus improving
+generality) by automatically synthesizing linear approximations. To implement
+this technique, we develop a novel approach that combines efficient heuristics to
+synthesize a candidate (possibly unsound) linear approximation with a nonlinear
+SMT solver to guarantee soundness. This technique is \textit{online} because we
+directly call SMT solvers to synthesize the linear approximations. We compare our
+synthesis approach with hand-crafted approximations, and demonstrate significant
+improvements in accuracy, thus confirming Hypothesis 2.
+
+\subsection{Offline Synthesis of Linear Approximations}
+A key limitation of the third technique is its online nature. The use of solvers
+incurs a significant runtime overhead when attempting to prove a given safety
+property. The final technique that we propose again improves generality, but
+alleviates the runtime overhead by performing the synthesis \textit{offline}.
+Whereas the third technique directly uses a solver to compute the linear
+approximation, this technique synthesizes a \textit{static imperative program}
+that computes linear approximations. Since the synthesized program does not call
+expensive solvers, it computes linear approximations several orders of magnitude
+faster than the online synthesis technique. While faster, the offline approach is
+not nearly as accurate as the online approach. However, the offline approach is
+still significantly more accurate than hand-crafted approximations, thus again
+confirming Hypothesis 2.
+
+\section{Overview}
+This dissertation is organized as follows...
