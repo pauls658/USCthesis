@@ -76,7 +76,8 @@ verification tools to the differential setting using
 \textit{composition}~\cite{barthe2011secure,terauchi2005secure,barthe2011relational}
  -- a standard trick in program verification to analyze multiple programs or
 executions of a single program. Specifically, for showing equivalence, we can
-create a combined network $ f''(x) = f'(x) - f(x) $ as shown in Figure~\ref{fig:}
+create a combined network $ f''(x) = f'(x) - f(x) $ as shown in
+Figure~\ref{fig:subbed_nnets_intro}
 and then show that $ |f''(x)| < \epsilon $ using a single network verification
 tool. The most scalable tools use over-approximation techniques, and would
 compute an over-approximation $ Y $ such that $ \{f''(x) \; | \; x \in X \}
@@ -100,6 +101,13 @@ This dissertation addresses these two limitations by developing \textit{accurate
 and \textit{general} algorithms for proving or disproving differential properties
 of neural networks -- a problem we refer to as differential verification.
 
+\begin{figure}
+	\centering
+	\scalebox{1.0}{\input{reludiff/figs/subbed_nets.tex}}
+	\caption{Composition approach for proving equivalence of $ f(x) $ and $ f'(x)
+	$.}
+	\label{fig:subbed_nnets_intro}
+\end{figure}
 
 \section{Limitations of Current Verification Tools}
 We first layout in more detail the limitations of current verification tools
@@ -115,24 +123,26 @@ layer-by-layer fashion. While the approximations computed for the neurons in the
 early layers are relatively accurate, the approximations become overly
 conservative in the later layers as the neural network's behavior becomes
 increasingly complex. Using the composition
-approach illustrated in Figure~\ref{fig:}, these tools would compute an
+approach illustrated in Figure~\ref{fig:subbed_nnets_intro}, these tools would
+compute an
 over-approximation of $ f(x) $ and $ f'(x) $  \textit{independently}, and then
 subtract them to approximate the difference of the two networks over all inputs.
 However, as previously mentioned, these approximations will be overly
 conservative for deeper networks, and thus the resulting approximation on the
 difference will be too conservative to verify reasonable equivalence properties.
-We empirically demonstrate this in Chapter~\ref{sec:reludiff}.
+We empirically demonstrate this in Chapter~\ref{ch:reludiff}.
 
 In addition, current tools are not general because they require an expert to
 hand-craft a \textit{linear approximation} for the neural network's activation
 functions in order to accurately over-approximate the values of a given neuron.
 While there exist techniques to compute linear approximations for arbitrary
 functions without the need for an expert, such as those used in rigorous global
-optimization~\cite{ibex} and nonlinear constraint solving~\cite{gao2013dreal}, we
+optimization~\cite{chabert2009contractor,trombettoni2011inner} and nonlinear
+constraint solving~\cite{gao2013dreal}, we
 show that these approaches produce overly-conservative approximations. This
 results in poor accuracy, therefore we say that current tools are not general. We
-empirically demonstrate this poor accuracy in Chapters~\ref{sec:linsyn}
-and~\ref{sec:offlinesyn}.
+empirically demonstrate this poor accuracy in Chapters~\ref{ch:linsyn}
+and~\ref{ch:offlinesyn}.
 
 
 \section{Hypotheses and Insights}
@@ -163,7 +173,8 @@ insights for improving the accuracy.
 Hypothesis 1a suggests a new technique for approximating the difference between
 two structurally similar neural networks. Prior work independently computes
 approximations for the output neurons, e.g. $ n_{3,1} $ and $ n'_{3,1} $ in
-Figure~\ref{fig:}, and then subtracts them to approximate the difference. In our
+Figure~\ref{fig:subbed_nnets_intro}, and then subtracts them to approximate the
+difference. In our
 new technique, we first approximate the difference between the neurons of the
 first layers, e.g. we compute an approximation for $ n_{1,1} - n'_{1,1} $ and $
 n_{1,2} - n'_{1,2} $. Then we use this result to approximate $ n_{2,1} - n'_{2,1}

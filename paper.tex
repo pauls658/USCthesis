@@ -5,12 +5,74 @@
  ,raggedbottom
 ]{USCthesis}
 
+
+% Brandon's packages
+\usepackage{tikz}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.11}
+\usepgfplotslibrary{groupplots}
+\usetikzlibrary{decorations}
+\usetikzlibrary{decorations.markings}
+\usepgfplotslibrary{fillbetween}
+\pgfplotsset{%
+	actfunc/.style = {%
+		domain=-5:3,
+		samples = 400,
+		smooth,
+		thick,
+		on layer={axis foreground},
+	}
+}
+
+\usepackage{listings}
+%\usepackage{amsmath}
+\usepackage{mathtools}
+\usepackage{xcolor}
+
+\lstset{ %
+	backgroundcolor=\color{white},   % choose the background color
+	basicstyle=\footnotesize\ttfamily,        % size of fonts used for the
+	%code
+	columns=fullflexible,
+	breaklines=true,                 % automatic line breaking only at
+	%whitespace
+	captionpos=b,                    % sets the caption-position to bottom
+	tabsize=4,
+	commentstyle=\color{mygreen},    % comment style
+	escapeinside={\%*}{*)},          % if you want to add LaTeX within your
+	%code
+	keywordstyle=\color{blue},       % keyword style
+	stringstyle=\color{mymauve}\ttfamily,     % string literal style
+	frame=single,
+	rulesepcolor=\color{red!20!green!20!blue!20},
+	% identifierstyle=\color{red},
+	language=c++,
+	escapechar=!
+}
+
+\usepackage{comment}
+\usepackage{algorithm2e}
+\usepackage{amsthm}
+\usepackage{multirow}
+\usepackage{makecell}
+\usepackage{amsmath}
+\usepackage{float}
+
+% Brandon's commands
+\newcommand{\declarecommand}[1]{\providecommand{#1}{}\renewcommand{#1}}
+\DeclareMathOperator*{\argmin}{argmin}
+\DeclareMathOperator*{\argmax}{argmax}
+\newcommand*{\argminl}{\argmin\limits}
+\newcommand*{\argmaxl}{\argmax\limits}
+
+
+%\tikzset{\font={\fontsize{8pt}{12}\selectfont}}
+
 % guidelines for manuscript formatting:
 %http://graduateschool.usc.edu/wp-content/themes/fictional-university-theme/assets/doc/Manuscript_Formatting_and_Documentation_Styles.pdf
 
 %% our customizations %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \usepackage[export]{adjustbox} % for frame option in \includegraphics
-\usepackage{amsmath}
 \usepackage{amssymb}
 \usepackage{array}
 \usepackage[utf8]{inputenc} % load inputenc before csquotes
@@ -98,7 +160,7 @@
 %%% draft mode / toggle commands %%%
 \usepackage{etoolbox}
 \newtoggle{draft}
-\settoggle{draft}{true} % change toggle for draft or final versions
+\settoggle{draft}{false} % change toggle for draft or final versions
 
 \iftoggle{draft}{
   % if 'draft' toggle is true
@@ -161,6 +223,23 @@
 
 \graphicspath{}
 \input{introduction.tex}
+
+\chapter{Approximating the Difference Layer-by-Layer}
+\label{ch:reludiff}
+\input{reludiff/diffNN.tex}
+
+
+\chapter{Symbolic Approximations for the Difference}
+\label{ch:neurodiff}
+\input{neurodiff/main.tex}
+
+\chapter{Online Synthesis of Linear Approximations}
+\label{ch:onlinesyn}
+\input{onlinesyn/convexsyn.tex}
+
+\chapter{Offline Synthesis of Linear Approximations}
+\label{ch:offlinesyn}
+\input{offlinesyn/main.tex}
 
 %%% chapter %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
