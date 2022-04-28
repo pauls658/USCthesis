@@ -1,1 +1,140 @@
-\lipsum[5-4]
+In this chapter, we summarize the main contributions of this dissertation,
+and discuss potentially fruitful directions for future work.
+
+\section{Summary}
+As neural networks make their way into safety-critical systems, providing
+formal guarantees about their safety has become paramount. This
+dissertation focuses on \textit{differential} safety properties, such as
+neural network equivalence, and it proposes \textit{accurate} and
+\textit{general} algorithms for proving or disproving them. We proposed
+four novel techniques towards this end.
+
+In Chapter~\ref{ch:reludiff}, we proposed a novel technique for
+over-approximating the difference between two structurally similar neural
+networks. Our technique approximates the difference between the two
+networks layer-by-layer, as opposed to existing techniques, which analyze
+the two networks independently. To implement this technique, we formally
+derived equations that relate the intermediate computations of the two
+networks, and then used interval analysis to bound the difference. In
+addition, we proposed an approach to iteratively refine the approximation.
+We demonstrated that this new technique significantly improves both the
+accuracy of the approximations and runtime to prove equivalence.
+
+In Chapter~\ref{ch:neurodiff}, we extended the layer-by-layer approximation
+technique with novel symbolic approximations. To implement this technique,
+we proposed novel linear approximations for the difference between two
+(ReLU) neurons, and an approach to introducing new symbolic variables to
+represent the intermediate neurons of the two networks. We demonstrated
+that this new symbolic technique further improves both the accuracy and
+runtime for proving equivalence.
+
+In Chapter~\ref{ch:onlinesyn}, we solved in a key challenge in making
+differential verification general, by proposing a technique for
+automatically synthesizing linear approximations for arbitrary functions.
+To implement this technique, we designed an efficient synthesis algorithm
+that combines inexpensive heuristic techniques with an SMT solver. We
+demonstrated that our synthesized linear approximations are more accurate
+than the best alternative approach that uses hand-crafted approximations.
+
+In Chapter~\ref{ch:offlinesyn}, we proposed an offline technique for
+synthesizing linear approximations to eliminate the overhead incurred by
+the use of solvers in the online technique. This approach synthesizes a
+static imperative program (that does not call solvers) that computes the
+linear approximation, thus eliminating the overhead from expensive solvers.
+We demonstrate that this approach again improves the accuracy over
+hand-crafted approximations, though it trades accuracy for efficiency
+compared to the online synthesis technique.
+
+\section{Future Work}
+Here we lay out potential extensions of our work.
+
+\subsection{Safety Properties Beyond Equivalence}
+\textit{Bounding Input Sensitivity.} Another important differential safety
+property is to prove a bound on the sensitivity of a neural network's
+inputs. Informally, this means proving that ``small changes to the inputs
+only cause small changes to the outputs''. Formally, for a neural network $
+f(x) $, an input space $ X $, a sensitivity bound $ \epsilon $, and a
+perturbation $ r $, we would aim to prove $ |f(x) - f(x + r)| \leq \epsilon
+$ for all $ x \in X $.
+
+\textit{Hyperproperties.} Related to differential properties are
+\textit{hyperproperties}. Here we give an example of a hyperproperty, which
+we believe has not been considered by prior work in the context of neural
+network verification. Informally, say we have a neural network that sensor
+inputs from an autonomous vehicle, and outputs a steering direction. A
+property we may be interested in proving is: ``given that in the previous
+time-step, the neural network output a right turn, in the current
+time-step, the neural network should continue to output a right turn or
+continue straight''.
+
+
+Formally, let $ f(x) $ be the neural network controller that outputs a
+steering angle for an autonomous vehicle. Here, $ x \in \mathbb{R}^n $ is a
+real-valued vector of sensor inputs, and assume $ f(x) \in [-30, 30] $ is
+the rotation of the steering wheel, so that $ f(x) < 0 $ is a left turn, $
+f(x) > 0 $ is a right turn, and $ f(x) = 0 $ goes straight. Furthermore,
+let $ x_t $ be the input given to the neural network at time-step $ t $.
+The property we wish to prove is that $ f(x_t) > 0 \implies f(x_{t+1}) \geq
+0) $. Here, $ x_{t+1} $ would be defined by $ x_t $ and the system
+dynamics. See e.g.~\cite{hu2020reach} for an example.
+
+\subsection{Synthesizing Other Types of Approximations}
+Many types approximations beyond linear approximation have been used in
+neural network verification. Automatically synthesizing these
+approximations would be interesting as well. We highlight some of these
+below.
+
+\textit{Zonotopes.} Zonotopes~\cite{ziegler2012lectures} have been used
+extensively in neural network
+verification~\cite{singh2018fast,bonaert2021fast,muller2021effective} are
+very similar to linear approximations, with the main difference being that
+the slopes of
+the lower and upper bound must be the same. Zonotopes could be synthesized
+both online and offline. For online synthesis, one would only need to
+devise a suitable linear program for synthesizing the candidate zonotope,
+as in Section~\ref{onlinesyn:sec:method-1}. Verifying that the zonotope is
+a sound approximation is straightforward. After devising an online
+approach, this procedure could then be used to generate examples for
+offline synthesis. A key challenge for offline synthesis is that the
+templates developed in Chapter~\ref{ch:offlinesyn} would likely not be
+applicable to zonotopes. One would either need to train a neural network to
+directly predict the zonotope's parameters, or devise new templates.
+
+\textit{Multi-Neuron Approximations.} A recent fruitful direction for
+improving accuracy of approximations in the context of neural network
+verification has been \textit{multi-neuron}
+approximations~\cite{Singh2019krelu,muller2021prima}. Whereas our online
+and offline synthesis techniques consider only a single neuron in
+isolation, prior work has shown computing approximations for multiple
+neurons jointly can significantly improve accuracy. However, these
+approximations are hand-crafted by experts, and thus could benefit from
+synthesis.
+
+\textit{Semi-Definite Relaxations.} Similar to linear approximations are
+semi-definite relaxations, which permit \textit{quadratic} lower and upper
+bounds. The added expressiveness of quadratic bounds versus linear bounds
+has been shown to result in significantly more accurate
+approximations~\cite{dathathri2020enabling}, though at the cost of
+additional runtime because a quadratic program must be solved as opposed to
+a linear program. Again, these techniques currently require and expert to
+handcraft the approximation, and thus could benefit from synthesis.
+
+
+\subsection{Improvements to Offline Synthesis}
+As previously mentioned, the offline synthesis technique trades accuracy
+for efficiency, however we believe we can achieve a better trade-off. In
+Section~\ref{offlinesyn:sec:soundness}, we solve
+Equation~\ref{offlinesyn:eq:opt} to compute the maximum violation, and
+adjust all linear approximations by this amount. In many cases, we found
+that this adjustment is relatively large, which means that often the
+computed linear approximations will be looser than necessary.
+
+A potential improvement would be to use \textit{counter-examples} to refine
+the synthesized approximation when the maximum violation is above some
+threshold. The underlying solver returns an input that maximizes
+Equation~\ref{offlinesyn:eq:opt} (i.e. a counter-example), which provides a
+hint at the inputs that are causing the violation to be large. We could
+then take this counter-example and attempt to reduce the violation for this
+input (and nearby inputs), either by retraining the neural network, or
+re-partitioning the input interval space. This could be done repeatedly
+until the maximum violation is reduced.
