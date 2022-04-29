@@ -1,0 +1,98 @@
+In this chapter, we review related work. We begin with the work that is most
+closely related to the two key problems studied in our work: proving/disproving
+differential properties, and synthesizing linear approximations. We then review
+more general related work.
+
+\section{Related Work on Differential Verification}
+% Various heuristic based approaches, focus on discovering but not proving the
+%absence of adversarial examples
+Most closely related to analyzing differential properties of neural networks are
+differential \textit{testing} techniques~\cite{xie2019diffchaser, PeiCYJ17,
+MaLLZG18, asyrofi2021can}. These works focus on \textit{disproving} a differential
+property, but, unlike our work, cannot prove that they hold.
+
+We note that two recent works ~\cite{teuber2021geometric,kleine2020verifying}
+propose techniques targeted proving equivalence of two \textit{arbitrary} neural
+networks (whereas we target structurally similar networks). This work is
+orthogonal to ours -- our technique significantly outperforms theirs when the
+weights of the two DNN's are relatively close, whereas their technique does
+significantly better when there is no relation between the two neural networks'
+weights.
+
+Also closely related are equivalence preserving neural network compression
+techniques~\cite{lahav2021pruning,serra2021scaling}, also referred to as ``exact
+neural network compression.'' Here, the equivalence verification is implicit (i.e.
+there is no equivalence verification routine), however we believe inspiration for
+future work could be drawn from these works.
+
+
+\section{Related Work on Synthesizing Linear Approximations}
+To the best of our knowledge, there is no work that directly addresses
+automatically synthesizing linear approximations, however computing linear
+approximations for arbitrary functions is a core component for rigorous global
+optimization~\cite{ibex} and SMT solving for nonlinear
+theories~\cite{gao2013dreal}. These approaches work by \textit{decomposing} the
+target function into its elementary operations, and combining linear
+approximations for these elementary operations, to obtain a linear approximation
+for the target function as a whole. While this produces a sound approximation, we
+show in Chapters~\ref{ch:onlinesyn} and~\ref{ch:offlinesyn} that it is often
+overly-conservative, which results in poor accuracy. A recent neural network
+verification framework~\cite{autolipra} made it possible to easily apply this
+decomposing-based approach, but supporting arbitrary activation functions was not
+the original intent.
+
+\section{Related Work on Verification of Neural Networks}
+\textit{Approximation-based Neural Network Verification.}
+There is a large body of work on using linear approximation
+techniques~\cite{SinghGPV19,zhang2018efficient,shi2020robustness,boopathy2019cnn,WengZCSHDBD18,paulsen2020reludiff,paulsen2020neurodiff,wu2021tightening,mohammadinejad2020diffrnn}
+and other abstract domains such as concrete intervals, symbolic
+intervals~\cite{WangPWYJ18}, and Zonotopes~\cite{GehrMDTCV18},
+for the purpose of neural network verification.
+%
+All of these can be thought of as leveraging restricted versions of the
+polyhedral abstract domain~\cite{CousotH78,CousotC77}.
+%
+To the best
+of our knowledge, these approaches are the most scalable (in terms of network
+size) due to the use of approximations, but this also means they are less
+accurate than exact approaches. In addition, all these approaches have the
+limitation that they depend on bounds that are hand-crafted by an expert.
+%
+In addition, several works used semi-definite
+relaxations~\cite{dathathri2020enabling,hu2020reach}, which essentially allow for
+quadratic lower and upper bounds, as the approximations. These approximations
+allow for more expressive lower and upper bounds, and thus often outperform linear
+approximations in terms of accuracy. However, this approach adds a significant
+amount of overhead when the lower and upper bounds need to be evaluated, thus they
+are significantly less scalable.
+
+\textit{SMT solver-based Neural Network Verification}
+There is also a large body of work on using exact constraint solving for neural
+network verification. Early works include solvers specifically designed for
+neural networks, such as Reluplex and
+Marabou~\cite{KatzBDJK17,KatzHIJLLSTWZDK19} and others~\cite{DvijothamSGMK18},
+and leveraging existing
+solvers~\cite{Ehlers17,HuangKWW17,BastaniILVNC16,HuangKWW17,baluta2019quantitative,tjeng2019evaluating,hu2020reach}.
+While more accurate, the reliance on an SMT solver typically limits their
+scalability. More recent work
+often uses solvers to refine the bounds computed by linear
+bounding~\cite{Singh2019krelu,SinghGPV19iclr,WangPWYJ18nips,tran2019star,tran2020verification}.
+Since the solvers leveraged in these approaches usually involve linear
+constraint solving techniques, they are usually only applicable to piece-wise
+linear activation functions such as ReLU and Max/Min-pooling.
+
+\section{Related Work on Testing Neural Networks}
+Other works are more geared towards single network testing, and use
+white-box testing techniques~\cite{ma2018deepgauge, xie2019deephunter,
+	SunWRHKK18, TianPJR18, odena2018tensorfuzz}, such as neuron coverage
+statistics, to assess how well a network has been tested, and also
+report interesting behaviors. Both of these can be thought of as
+adapting software engineering techniques to machine learning. In addition, many
+works use machine learning techniques, such as
+gradient optimization, to find interesting behaviors, such as
+adversarial examples\cite{KurakinGB17a, madry2017towards, NguyenYC15,
+	XuQE16, Moosavi-Dezfooli16}. These interesting behaviors can then be
+used to retrain the network to improve
+robustness~\cite{GoodfellowSS15, RaghunathanSL18}. Again, these
+techniques do not provide guarantees, though we believe they could be
+integrated into with our techniques to quickly disprove a property.

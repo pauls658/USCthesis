@@ -78,6 +78,21 @@ The property we wish to prove is that $ f(x_t) > 0 \implies f(x_{t+1}) \geq
 0) $. Here, $ x_{t+1} $ would be defined by $ x_t $ and the system
 dynamics. See e.g.~\cite{hu2020reach} for an example.
 
+\subsection{Other Uses for Equivalence Verification}
+While we only used our proved equivalence of compressed networks with
+respect to their original networks, there are other practical use cases for
+proving equivalence. A recent example is \textit{neural network
+repair}~\cite{yang2021neural,usman2021nn,sotoudeh2021provable,dong2021towards}.
+ Typically,
+the repairs made by prior work do not come with formal guarantees (they
+only test the repairs on a restricted set of inputs). Our equivalence
+verification could provide such guarantees on the repairs made by these
+techniques. In addition, prior work typically aims at minimally modifying
+the neural network's weights, which is a case where our verification
+technique excels. Yet another application would be avoiding
+\textit{catastrophic forgetting}~\cite{kirkpatrick2017overcoming} when
+performing online training of neural networks.
+
 \subsection{Synthesizing Other Types of Approximations}
 Many types approximations beyond linear approximation have been used in
 neural network verification. Automatically synthesizing these
