@@ -160,7 +160,7 @@
 %%% draft mode / toggle commands %%%
 \usepackage{etoolbox}
 \newtoggle{draft}
-\settoggle{draft}{false} % change toggle for draft or final versions
+\settoggle{draft}{true} % change toggle for draft or final versions
 
 \iftoggle{draft}{
   % if 'draft' toggle is true
@@ -183,6 +183,7 @@
 
 %%% front matter %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{document}
+
 
 % title should be all caps
 \title{Differential Verification of Deep Neural Networks}

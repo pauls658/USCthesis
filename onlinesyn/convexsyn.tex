@@ -295,14 +295,14 @@ To summarize, this paper makes the following contributions:
 \end{itemize}
 
 
-The rest of this paper is organized as follows.  First, we provide the
+The rest of this chapter is organized as follows.  First, we provide the
 technical background in Section~\ref{onlinesyn:sec:preliminaries}.  Then, we
 present our method for synthesizing the linear bounds in
 Section~\ref{onlinesyn:sec:method-1} and our method for verifying the linear
 bounds in Section~\ref{onlinesyn:sec:method-2}.  Next, we present the
-experimental results in Section~\ref{onlinesyn:sec:experiment}.  We review the
-related work in Section~\ref{onlinesyn:sec:related} and, finally, give our
-conclusions in Section~\ref{onlinesyn:sec:conclusion}.
+experimental results in Section~\ref{onlinesyn:sec:experiment}. Finally, we
+summarize the contributions of this chapter in
+Section~\ref{onlinesyn:sec:conclusion}.
 
 
 
@@ -366,7 +366,8 @@ work~\cite{hendrycks2016gaussian,ramachandran2017searching,radford2018improving}
 theoretical properties.
 
 Unlike feed-forward neural networks, recurrent neural networks receive a
-sequence of inputs $ [\mathbf{x^{(1)}}, \dots, \mathbf{x^{(t)}} ] $, and the
+sequence of inputs $ [\mathbf{x^{(1)}}, $  $ \dots, $  $ \mathbf{x^{(t)}} ] $, and
+the
 final
 output of $ f $ on $ \mathbf{x_t} $ is used to perform the classification of
 the whole sequence. Recurrent neural networks are
@@ -545,8 +546,9 @@ want them to be \textit{tight}. Generally, this means that volume below the
 upper bound is minimized, and volume below the lower bound is maximized.
 
 
-As an example, prior work~\cite{SinghGPV19,zhang2018efficient} proposed the following sound and
-tight bound for $ \sigma(x) = max(0, x) $:
+As an example, prior work~\cite{SinghGPV19,zhang2018efficient} has proposed the
+following
+sound and 	tight bound for $ \sigma(x) $  $ = $  $ max(0, x) $:
 \[
 	\forall x_i \in [l_i, u_i] ~.~ \frac{u_i}{u_i - l_i}x_i +
 	\frac{-l_iu_i}{u_i-l_i} \leq \sigma(x_i)
@@ -1345,10 +1347,10 @@ parallel. We configure each method to use up to 6 threads.
 
 First, we compare the overall performance of our new method and the
 default linear bounding technique in~\autolipra{}.  The results are shown
-in Table~\ref{onlinesyn:tbl:1}.  Here, Columns~1-2 show the name of the dataset
-and the type of neural networks.  Columns~3-4 show the results of the
+in Table~\ref{onlinesyn:tbl:1}.  Here, Columns 1 and 2 show the name of the dataset
+and the type of neural networks.  Columns 3 and 4 show the results of the
 default~\autolipra{}, including the percentage of inputs certified and
-the analysis time in seconds.  Similarly, Columns~5-6 show the results
+the analysis time in seconds.  Similarly, Columns 5 and 6 show the results
 of our new method.
 
 The results in Table~\ref{onlinesyn:tbl:1} show that, in terms of the analysis
@@ -1441,65 +1443,65 @@ measured as $ \frac{\autolipra{}}{\Name{}} $.
 Overall, the results show that~\Name{} is more accurate in nearly all cases,
 and~\Name{} often produces final output bounds 2-5X tighter than~\autolipra{}.
 
-
-\section{Related Work}
-\label{onlinesyn:sec:related}
-
-\textit{Linear Bound-based Neural Network Verification}
-There is a large body of work on using linear-bounding
-techniques~\cite{SinghGPV19,zhang2018efficient,shi2020robustness,boopathy2019cnn,WengZCSHDBD18,paulsen2020reludiff,paulsen2020neurodiff,wu2021tightening,mohammadinejad2020diffrnn}
-and other abstract domains such as concrete intervals, symbolic
-intervals~\cite{WangPWYJ18}, and Zonotopes~\cite{GehrMDTCV18},
-for the purpose of neural network verification.
 %
-All of these can be thought of as leveraging restricted versions of the
-polyhedral abstract domain~\cite{CousotH78,CousotC77}.
-%
-%Such approaches can be thought
-%of as leveraging a restricted version of the polyhedral abstract
-%domain~\cite{CousotH78,CousotC77}. In addition, other abstract domains have
-%been leveraged as well, such as concrete intervals, symbolic
-%intervals~\cite{WangPWYJ18}, and Zonotopes~\cite{GehrMDTCV18}. All of these can
-%be thought
-%of as restricted versions of the full polyhedral domain.
-To the best
-of our knowledge, these approaches are the most scalable (in terms of network
-size) due to the use of approximations, but this also means they are less
-accurate than exact approaches. In addition, all these approaches have the
-limitation that they depend on bounds that are hand-crafted by an expert.
-%
-%For
-%example, DeepPoly~\cite{SinghGPV19}, a state-of-the-art tool based on linear
-%bounding, only handles the ReLU, sigmoid, tanh, and leaky ReLU activations.
+%\section{Related Work}
+%\label{onlinesyn:sec:related}
 
-%There are also neural network verifiers based on over-approximated
-%interval analysis...  They rely on linear bounds to \emph{approximate}
-%the nonlinear activation functions...  Due to the use of
-%approximation, these techniques are often significantly faster than
-%SMT-solver based techniques; at the same time, they are also less
-%accurate.
+%\textit{Linear Bound-based Neural Network Verification}
+%There is a large body of work on using linear-bounding
+%techniques~\cite{SinghGPV19,zhang2018efficient,shi2020robustness,boopathy2019cnn,WengZCSHDBD18,paulsen2020reludiff,paulsen2020neurodiff,wu2021tightening,mohammadinejad2020diffrnn}
+%and other abstract domains such as concrete intervals, symbolic
+%intervals~\cite{WangPWYJ18}, and Zonotopes~\cite{GehrMDTCV18},
+%for the purpose of neural network verification.
 %%
-%The main problem is that, unlike our method, all of these existing
-%methods rely on linear bounds hand-crafted by domain experts.  As
-%such, they can only handle a very limited number of activation
-%functions used in the real world. For example, DeepPoly, which is a
-%state-of-the-art verification tool based on interval analysis, can
-%only handle \#\# types of activation functions.
-
-\textit{SMT solver-based Neural Network Verification}
-There is also a large body of work on using exact constraint solving for neural
-network verification. Early works include solvers specifically designed for
-neural networks, such as Reluplex and
-Marabou~\cite{KatzBDJK17,KatzHIJLLSTWZDK19} and others~\cite{DvijothamSGMK18},
-and leveraging existing
-solvers~\cite{Ehlers17,HuangKWW17,BastaniILVNC16,HuangKWW17,baluta2019quantitative,tjeng2019evaluating,hu2020reach}.
- While more accurate, the reliance on an SMT solver typically limits their
- scalability. More recent work
-often uses solvers to refine the bounds computed by linear
-bounding~\cite{Singh2019krelu,SinghGPV19iclr,WangPWYJ18nips,tran2019star,tran2020verification}.
-Since the solvers leveraged in these approaches usually involve linear
-constraint solving techniques, they are usually only applicable to piece-wise
-linear activation functions such as ReLU and Max/Min-pooling.
+%All of these can be thought of as leveraging restricted versions of the
+%polyhedral abstract domain~\cite{CousotH78,CousotC77}.
+%%
+%%Such approaches can be thought
+%%of as leveraging a restricted version of the polyhedral abstract
+%%domain~\cite{CousotH78,CousotC77}. In addition, other abstract domains have
+%%been leveraged as well, such as concrete intervals, symbolic
+%%intervals~\cite{WangPWYJ18}, and Zonotopes~\cite{GehrMDTCV18}. All of these can
+%%be thought
+%%of as restricted versions of the full polyhedral domain.
+%To the best
+%of our knowledge, these approaches are the most scalable (in terms of network
+%size) due to the use of approximations, but this also means they are less
+%accurate than exact approaches. In addition, all these approaches have the
+%limitation that they depend on bounds that are hand-crafted by an expert.
+%%
+%%For
+%%example, DeepPoly~\cite{SinghGPV19}, a state-of-the-art tool based on linear
+%%bounding, only handles the ReLU, sigmoid, tanh, and leaky ReLU activations.
+%
+%%There are also neural network verifiers based on over-approximated
+%%interval analysis...  They rely on linear bounds to \emph{approximate}
+%%the nonlinear activation functions...  Due to the use of
+%%approximation, these techniques are often significantly faster than
+%%SMT-solver based techniques; at the same time, they are also less
+%%accurate.
+%%%
+%%The main problem is that, unlike our method, all of these existing
+%%methods rely on linear bounds hand-crafted by domain experts.  As
+%%such, they can only handle a very limited number of activation
+%%functions used in the real world. For example, DeepPoly, which is a
+%%state-of-the-art verification tool based on interval analysis, can
+%%only handle \#\# types of activation functions.
+%
+%\textit{SMT solver-based Neural Network Verification}
+%There is also a large body of work on using exact constraint solving for neural
+%network verification. Early works include solvers specifically designed for
+%neural networks, such as Reluplex and
+%Marabou~\cite{KatzBDJK17,KatzHIJLLSTWZDK19} and others~\cite{DvijothamSGMK18},
+%and leveraging existing
+%solvers~\cite{Ehlers17,HuangKWW17,BastaniILVNC16,HuangKWW17,baluta2019quantitative,tjeng2019evaluating,hu2020reach}.
+% While more accurate, the reliance on an SMT solver typically limits their
+% scalability. More recent work
+%often uses solvers to refine the bounds computed by linear
+%bounding~\cite{Singh2019krelu,SinghGPV19iclr,WangPWYJ18nips,tran2019star,tran2020verification}.
+%Since the solvers leveraged in these approaches usually involve linear
+%constraint solving techniques, they are usually only applicable to piece-wise
+%linear activation functions such as ReLU and Max/Min-pooling.
 %To handle
 %non-piece-wise linear activations, an expert would likely need to hand-craft
 %the constraints.
@@ -1533,7 +1535,7 @@ linear activation functions such as ReLU and Max/Min-pooling.
 
 
 
-\section{Conclusions}
+\section{Summary}
 \label{onlinesyn:sec:conclusion}
 
 We have presented~\Name{}, a method for synthesizing linear bounds for

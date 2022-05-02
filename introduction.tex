@@ -1,14 +1,14 @@
 Neural networks are being deployed in high-stakes applications due to their
 state-of-the-art performance for important problems such as image
 recognition~\cite{he2016deep}, object detection~\cite{redmon2016you}, and other
-perception-related tasks. Among the most famous examples are
+perception-related tasks. Among the most famous applications are
 self-driving~\cite{grigorescu2020survey}, however they are being studied for
 aircraft collision avoidance~\cite{JulianKO18}, drone control~\cite{caps2021}, and
-even in medical devices~\cite{tan2021toward}.
+even controllers in medical devices~\cite{tan2021toward}.
 
-While highly performant, neural networks are ``black-boxes'' -- they can have
-thousands to millions of parameters, which makes it impossible for a human to
-understand their behavior. In addition, they are also notoriously brittle. For
+While highly performant, neural networks are ``black-boxes.'' Even the smallest neural
+networks have thousands of parameters, which makes it impossible for a human to
+understand their behavior. In addition, they are notoriously brittle. For
 example, they are known to be vulnerable to \textit{adversarial
 examples}~\cite{szegedy2013intriguing}, and generally can have undesirable
 behaviors~\cite{KatzBDJK17}. This black-box nature combined with their brittleness
@@ -31,7 +31,7 @@ is a property of two (or more) neural networks or two (or more) executions of a
 single network. Various important safety
 properties are differential in nature, however in this dissertation, we focus on
 \textit{equivalence} as the canonical differential property. Informally,
-equivalence means showing that two neural networks produce similar outputs given
+proving equivalence means showing that two neural networks produce similar outputs given
 the same input.
 
 Equivalence is an important property because neural networks are often
@@ -68,14 +68,14 @@ about equivalence. While there have been many works in applying verification for
 robustness safety properties~\cite{HuangKWW17,Ehlers17,KatzHIJLLSTWZDK19,RuanHK18,
 WangPWYJ18nips,SinghGPV19iclr,MirmanGV18,GehrMDTCV18,FischerBDGZV19} (or reachable
 set computation~\cite{hu2020reach,everett2021icra}, which can be
-formulated as a robustness property), to the best of our knowledge there was no
-prior work on proving equivalence.
+formulated as a robustness property), to the best of our knowledge there is no work
+prior to ours on proving equivalence.
 
 Before developing our own solution, we first attempted to adapt current
 verification tools to the differential setting using
 \textit{composition}~\cite{barthe2011secure,terauchi2005secure,barthe2011relational}
- -- a standard trick in program verification to analyze multiple programs or
-executions of a single program. Specifically, for showing equivalence, we can
+ -- a standard trick in program verification to analyze differential properties of
+ programs. Specifically, for showing equivalence, we can
 create a combined network $ f''(x) = f'(x) - f(x) $ as shown in
 Figure~\ref{fig:subbed_nnets_intro}
 and then show that $ |f''(x)| < \epsilon $ using a single network verification
@@ -93,8 +93,7 @@ reasonable amount of time. Second, this approach is not general because current
 verification tools are designed to analyze ``common'' types of neural networks.
 Practically, this means that either their implementations do not support many
 state-of-the-art neural networks, or, again, they compute overly-conservative
-approximations on novel neural networks, and therefore they cannot prove useful
-properties.
+approximations, and therefore they cannot prove useful properties.
 
 
 This dissertation addresses these two limitations by developing \textit{accurate}
@@ -112,12 +111,12 @@ of neural networks -- a problem we refer to as differential verification.
 \section{Limitations of Current Verification Tools}
 We first layout in more detail the limitations of current verification tools
 because these lead to insights for how to address them. As previously mentioned,
-current tools are neither accurate nor general for differential properties. Here,
-we highlight \textit{why} this is the case.
+current tools are neither accurate nor general for proving equivalence (or differential
+properties in general). Here, we highlight \textit{why} this is the case.
 
 Current tools are not accurate proving equivalence because they do not have the
 ability to exploit the structural similarities of two closely related
-networks when computing their approximations. They work by computing an
+networks. They work by computing an
 over-approximation on the values of each neuron in a neural network in a forward
 layer-by-layer fashion. While the approximations computed for the neurons in the
 early layers are relatively accurate, the approximations become overly
@@ -127,7 +126,8 @@ approach illustrated in Figure~\ref{fig:subbed_nnets_intro}, these tools would
 compute an
 over-approximation of $ f(x) $ and $ f'(x) $  \textit{independently}, and then
 subtract them to approximate the difference of the two networks over all inputs.
-However, as previously mentioned, these approximations will be overly
+However, as previously mentioned, these approximations for $ f(x) $ and $ f'(x) $ will
+be overly
 conservative for deeper networks, and thus the resulting approximation on the
 difference will be too conservative to verify reasonable equivalence properties.
 We empirically demonstrate this in Chapter~\ref{ch:reludiff}.
@@ -136,12 +136,12 @@ In addition, current tools are not general because they require an expert to
 hand-craft a \textit{linear approximation} for the neural network's activation
 functions in order to accurately over-approximate the values of a given neuron.
 While there exist techniques to compute linear approximations for arbitrary
-functions without the need for an expert, such as those used in rigorous global
+functions without the need for an expert, such as the techniques used in rigorous global
 optimization~\cite{chabert2009contractor,trombettoni2011inner} and nonlinear
 constraint solving~\cite{gao2013dreal}, we
 show that these approaches produce overly-conservative approximations. This
-results in poor accuracy, therefore we say that current tools are not general. We
-empirically demonstrate this poor accuracy in Chapters~\ref{ch:linsyn}
+results in poor accuracy, and thus current tools are not general. We
+empirically demonstrate this poor accuracy in Chapters~\ref{ch:onlinesyn}
 and~\ref{ch:offlinesyn}.
 
 
@@ -196,7 +196,7 @@ As previously mentioned, the key challenge to obtaining accurate approximations
 lies in computing linear approximations for the neural network's activation
 functions. Prior to our work, an expert needed to hand-craft these linear
 approximations in order to be accurate, which poses significant limitations on
-the generality of existing verification tools.
+the generality of existing verification tools. Thus we propose the following hypothesis.
 
 \begin{table}[h]
 	\centering
@@ -238,7 +238,7 @@ difference between two structurally similar neural networks by approximating
 their difference layer-by-layer. To implement such a technique, we make two key
 intellectual contributions. First, we formally derive equations that relate the
 intermediate computations of the two neural networks, thus allowing the
-layer-by-layer approximation. We then use \textit{interval analysis} bound these
+layer-by-layer approximation. We then use \textit{interval analysis} to bound these
 equations, resulting in an over-approximation on the difference between the two
 networks. Second, we develop a novel refinement technique, which can
 iteratively improve the accuracy of the computed approximation. We
@@ -252,7 +252,7 @@ The second technique that we propose further improves the accuracy of the
 layer-by-layer approximation by using symbolic approximations. To implement this
 technique, we make two more intellectual contributions. First, we develop a novel
 linear approximation for the difference between two neurons, which allows us to
-maintain symbols in the intervals. Second, we also propose a technique to
+maintain symbols in the intervals. Second, we propose a technique to
 judiciously create new symbolic variables that represent the intermediate neurons
 of the two networks. We compare this symbolic approach with our first technique
 and demonstrate further improvements in both accuracy and runtime, thus
@@ -262,17 +262,16 @@ confirming Hypothesis 1b.
 The third technique that we propose improves the accuracy of approximations for
 neural networks with non-standard activation functions (thus improving
 generality) by automatically synthesizing linear approximations. To implement
-this technique, we develop a novel approach that combines efficient heuristics to
-synthesize a candidate (possibly unsound) linear approximation with a nonlinear
-SMT solver to guarantee soundness. This technique is \textit{online} because we
-directly call SMT solvers to synthesize the linear approximations. We compare our
-synthesis approach with hand-crafted approximations, and demonstrate significant
+this technique, we develop a novel approach that combines efficient (unsound) heuristics
+with a nonlinear SMT solver to guarantee soundness. This technique is \textit{online}
+because we directly call SMT solvers to synthesize the linear approximations. We compare
+our synthesis approach with hand-crafted approximations, and demonstrate significant
 improvements in accuracy, thus confirming Hypothesis 2.
 
 \subsection{Offline Synthesis of Linear Approximations}
 A key limitation of the third technique is its online nature. The use of solvers
-incurs a significant runtime overhead when attempting to prove a given safety
-property. The final technique that we propose again improves generality, but
+incurs a significant runtime overhead when attempting to prove a given property. The
+final technique that we propose again improves generality, but
 alleviates the runtime overhead by performing the synthesis \textit{offline}.
 Whereas the third technique directly uses a solver to compute the linear
 approximation, this technique synthesizes a \textit{static imperative program}
@@ -298,6 +297,7 @@ Chapter~\ref{ch:onlinesyn} presents our online technique for synthesizing linear
 approximations, and has been published~\cite{paulsen2022linsyn} in the main track
 of the International Conference on Tools and Algorithms for the Construction and
 Analysis of Systems. Chapter~\ref{ch:offlinesyn} presents our offline technique
-for synthesizing linear approximations, and is currently under submission.
+for synthesizing linear approximations, and has been published at the
+International Conference on Computer Aided Verification.
 Finally, in Chapter~\ref{ch:conclusions} we summarize the contributions of this
 dissertation, and present potential directions for future work.

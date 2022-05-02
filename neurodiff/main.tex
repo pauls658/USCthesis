@@ -79,7 +79,7 @@ they lack crucial information needed to prove the equivalence of
 multiple networks.
 %
 One exception is the \ReluDiff{} tool of Paulsen et
-al.~\cite{PaulsenWW20}, which computes a sound approximation of the
+al.~\cite{paulsen2020reludiff}, which computes a sound approximation of the
 difference of two neural networks, a problem known as
 \textit{differential verification}.  While \ReluDiff{} performs
 better than other techniques, the overly conservative approximation it
@@ -155,7 +155,7 @@ hence gaining significant speedup.
 %\subsubsection{Convex approximation: what's new?}
 The new convex approximations used in \Name{} are significantly more
 accurate than not only the coarse-grained \emph{concretizations}
-in \ReluDiff{}~\cite{PaulsenWW20} but also the standard convex
+in \ReluDiff{}~\cite{paulsen2020reludiff} but also the standard convex
 approximations in single-network verification tools~\cite{SinghGPV19,
 Singh2019krelu, WangPWYJ18nips, zhang2018efficient}.
 %
@@ -180,7 +180,7 @@ inputs used by existing tools either.
 While the use of symbolic inputs is well understood, e.g., both in
 single-network verification~\cite{SinghGPV19, Singh2019krelu,
 WangPWYJ18nips, zhang2018efficient} and differential
-verification~\cite{PaulsenWW20}, this is the first time that symbolic
+verification~\cite{paulsen2020reludiff}, this is the first time that symbolic
 variables are used to substitute values of hidden neurons during
 differential verification.
 %
@@ -194,7 +194,7 @@ We have implemented the proposed \Name{} in a tool and evaluated it on
 a large set of differential verification tasks. Our benchmarks
 consists of 49 networks, from applications such as aircraft collision
 avoidance, image classification, and human activity recognition.  We
-have experimentally compared with \ReluDiff{}~\cite{PaulsenWW20}, the
+have experimentally compared with \ReluDiff{}~\cite{paulsen2020reludiff}, the
 state-of-the-art tool which has also been shown to be superior to
 \ReluVal{}~\cite{WangPWYJ18} and \DeepPoly{}~\cite{SinghGPV19} for differential
 verification.
@@ -221,14 +221,13 @@ and accuracy gains.
 \end{itemize}
 
 
-The remainder of this paper is organized as follows.  First, we
+The remainder of this chapter is organized as follows.  First, we
 provide a brief overview of our method in Section~\ref{neurodiff:sec:overview}.
 Then, we provide the technical background in
 Section~\ref{neurodiff:sec:preliminary}.  Next, we present the detailed
 algorithms in Section~\ref{neurodiff:sec:approach} and the experimental results
-in Section~\ref{neurodiff:sec:experiment}.  We review the related work in
-Section~\ref{neurodiff:sec:related}. Finally, we give our conclusions in
-Section~\ref{neurodiff:sec:conclusion}.
+in Section~\ref{neurodiff:sec:experiment}. Finally, we summarize the contributions
+of this chapter in Section~\ref{neurodiff:sec:conclusion}.
 
 
 
@@ -338,7 +337,7 @@ $[LB(f')-UB(f), UB(f')-LB(f)] = $ $ [-1.65x_1 + 1.9x_2 - 14.73,
 the bounds $ [-21.83, 21.12] $.  Unfortunately, the bounds are far
 from being accurate.
 
-The \ReluDiff{} method of Paulsen et al.~\cite{PaulsenWW20} showed
+The \ReluDiff{} method of Paulsen et al.~\cite{paulsen2020reludiff} showed
 that, by directly computing a \textit{difference interval}
 layer-by-layer, the accuracy can be greatly improved.  For the running
 example, \ReluDiff{} would first compute bounds on the difference
@@ -352,7 +351,7 @@ the difference bound \emph{before} errors have accumulated, whereas
 the naive approach first accumulates significant errors at each
 neuron, and \emph{then} computes the difference bound.
 %
-In our running example, \ReluDiff{}~\cite{PaulsenWW20} would
+In our running example, \ReluDiff{}~\cite{paulsen2020reludiff} would
 compute the tighter bounds $ [-3.1101, 2.5600] $.
 
 
@@ -386,7 +385,7 @@ concretize the symbolic expressions.
 \centering
 %\captionsetup{width=0.98\textwidth}
 \includegraphics[width=\linewidth]{neurodiff/figs/naiveboundingplanes.png}
-\caption{Bounding planes computed by \ReluDiff{}~\cite{PaulsenWW20}.}
+\caption{Bounding planes computed by \ReluDiff{}~\cite{paulsen2020reludiff}.}
 \label{neurodiff:fig:naiveboundingplanes}
 \end{minipage}
 
@@ -442,7 +441,7 @@ by the interval subtraction.  This is precisely why the naive approach
 performs poorly.
 
 
-The \ReluDiff{} method of Paulsen et al.~\cite{PaulsenWW20} improves
+The \ReluDiff{} method of Paulsen et al.~\cite{paulsen2020reludiff} improves
 upon the new approximation by computing an interval bound on $ n' - n
 $, denoted $ \Delta $, then rewriting $z = \relu{n'} - \relu{n} $ as $
 z= \relu{n + \Delta} - \relu{n} $, and finally bounding this new
@@ -453,7 +452,7 @@ Figure~\ref{neurodiff:fig:equation1} shows the shape of $ z = \relu{n
 four piece-wise linear subregions, defined by values of the input
 variables $n$ and $\Delta$.
 %
-While the bounds computed by \ReluDiff{}~\cite{PaulsenWW20}, shown as
+While the bounds computed by \ReluDiff{}~\cite{paulsen2020reludiff}, shown as
 the (horizontal) yellow planes in
 Figure~\ref{neurodiff:fig:naiveboundingplanes}, are sound, in practice they tend
 to be loose because the upper and lower bounds are both concrete
@@ -476,7 +475,7 @@ used by single network verification tools.
 %
 Our approximations have the advantage of introducing significantly less
 error than the horizontal planes used
-in \ReluDiff{}~\cite{PaulsenWW20}, while maintaining some of the
+in \ReluDiff{}~\cite{paulsen2020reludiff}, while maintaining some of the
 symbolic information for $ \Delta $ before applying the ReLU
 activation.
 
@@ -701,7 +700,12 @@ significantly more considerations in our problem domain.
 % Interval analysis
 Often times, the output interval will not be tight enough to verify the desired property. One way to improve the result is to divide the input interval into disjoint sub-intervals, perform the analysis on each region, and then union the output intervals together. The resulting output interval is guaranteed to be at least as tight the original output interval~\cite{moore2009introduction}. In fact, previous work showed that, for ReLU networks, the analysis result can be made arbitrarily accurate through input partitioning based refinement~\cite{WangPWYJ18}.
 
-The key challenge in this type of refinement is deciding how to partition the input interval. Previous work~\cite{PaulsenWW20, WangPWYJ18, WangPWYJ18nips} has seen success by computing \textit{smear values}~\cite{kearfott1990algorithm, kearfott2013rigorous} for each input. Informally, the smear value is a measure of how much influence a single input neuron has on the output values.
+The key challenge in this type of refinement is deciding how to partition the
+input interval. Previous work~\cite{paulsen2020reludiff, WangPWYJ18,
+WangPWYJ18nips} has seen success by computing \textit{smear
+values}~\cite{kearfott1990algorithm, kearfott2013rigorous} for each input.
+Informally, the smear value is a measure of how much influence a single input
+neuron has on the output values.
 
 For example, ....
 }
@@ -721,7 +725,8 @@ present our algorithms for computing convex approximations
 \subsection{Differential Verification -- Baseline}
 \label{neurodiff:sec:baseline}
 
-We build off the work of Paulsen et al.~\cite{PaulsenWW20}, so in this section
+We build off the work of Paulsen et al.~\cite{paulsen2020reludiff}, so in this
+section
 we review the relevant pieces. We assume that the input
 to \Name{} consists of two networks $ f $ and $ f' $, each with $ l $ layers
 of the same size.  Let $ \npj $ in $ f' $ be the neuron paired with
@@ -761,8 +766,8 @@ target neuron. This is defined as
 \]
 %
 We illustrate this computation on node $ \nd{1}{1} $ in our
-example. First, we initialize $ \IntOut{\nd{0}{1}} = [0,0]$ ,
-$\IntOut{\nd{0}{2}} = [0,0]$. Then we compute $ \IntIn{\nd{1}{1}} =
+example. First, we initialize $ \IntOut{\nd{0}{1}} $  $ = $  $ [0,0] $ ,
+$\IntOut{\nd{0}{2}} = [0,0]$. Then we compute $ \IntIn{\nd{1}{1}} $  $ =
 [0, 0] \times 2.0 +$$ [x_1, x_1] \times 0.1 + $$ [0, 0] \times -2.0 +
 $ $ [x_2, x_2] \times -0.1 = $ $[0.1x_1 - 0.1x_2,$ $ 0.1x_1 - 0.1x_2]
 $.
@@ -778,7 +783,7 @@ z_1 = \relu{{\nj} + {\ndj}} - \relu{{\nj}} \label{neurodiff:eq:1}\\
 z_2 = \relu{{\npj}} - \relu{{\npj} - {\ndj}} \label{neurodiff:eq:2}
 \end{align}
 %
-While Paulsen et al.~\cite{PaulsenWW20} also compute bounds of these
+While Paulsen et al.~\cite{paulsen2020reludiff} also compute bounds of these
 two equations, they use \emph{concretizations} instead of \emph{linear
 approximations}, thus throwing away all the symbolic information.  For
 the running example, their method would result in the bounds of
@@ -894,7 +899,7 @@ $ z_1 = \relu{\nn + \nnd} \leq \nnd $, so the approximation is
 sound.
 
 \paragraph{Case 2: $ \UBU{\IntIn{\nnd}} \leq 0 $.}
-This case was previously proven~\cite{PaulsenWW20}, but we restate it
+This case was previously proven~\cite{paulsen2020reludiff}, but we restate it
 here.  $ \UBU{\IntIn{\nnd}} \leq 0 $ $ \iff $ $ \nnp \leq \nn $ $ \implies $
 $\relu{\nnp} \leq \relu{\nn} $
 $ \iff $ $ \relu{\nnp} - \relu{\nn} \leq 0 $.
@@ -966,8 +971,10 @@ simplify Equation~\ref{neurodiff:eq:1} to $ z_1 = \nn + \nnd - \nn
 -\nn \wedge \nnd < 0 \implies \nnd < min(0, -\nn) = z_1 $.
 
 \paragraph{Case 2: $ \LBL{\IntIn{\nnd}} \geq 0 $.}
-This case was previously proven sound \cite{PaulsenWW20}, but we
-restate it here. $ \LBL{\IntIn{\nnd}} \geq 0 $ $ \iff $ $ \nnp \geq \nn $ $
+This case was previously proven sound \cite{paulsen2020reludiff}, but we
+restate it here.
+\\
+$ \LBL{\IntIn{\nnd}} $  $ \geq 0 $ $ \iff $ $ \nnp \geq \nn $ $
 \implies $ $ \relu{\nnp} \geq \relu{\nn} $ $ \iff $ $ \relu{\nnp} - \relu{\nn}
 \geq 0 $.
 
@@ -1003,7 +1010,7 @@ $ \nnp $, under certain conditions, we are able to tighten these
 bounds even further.
 %
 Toward this end, we restate the following two lemmas proved by Paulsen
-et al.~\cite{PaulsenWW20}, which will come in handy.  They are related
+et al.~\cite{paulsen2020reludiff}, which will come in handy.  They are related
 to properties of Equations~\ref{neurodiff:eq:1} and \ref{neurodiff:eq:2},
 respectively.
 %
@@ -1085,7 +1092,7 @@ imply $ \UBEq{\IntOut{\nnd}} \geq max(-\nn, \nnd) $.
 
 \paragraph{Tighter Lower Bound When $ \nn $ Is Linear.}
 
-Here, we can use the approximation $ \LBEq{\IntOut{\nnd}}
+We can use the approximation $ \LBEq{\IntOut{\nnd}}
 = \LBEq{\IntIn{\nnd}} $. This improves over the second and third cases
 of our general lower bound.
 
@@ -1155,7 +1162,7 @@ an $ x_4 $ term, which will be the case for $ \n{3}{1} $, we will have to
 recursively substitute the bounds of the
 previous intermediate variables, such as $ x_3 $. This becomes expensive,
 especially when it is used together with our bisection-based
-refinement~\cite{WangPWYJ18,PaulsenWW20}.
+refinement~\cite{WangPWYJ18,paulsen2020reludiff}.
 %
 Thus, in practice, we first remove any back-references to intermediate
 variables by substituting in their lower bounds and upper bounds into the
@@ -1219,7 +1226,7 @@ factor.
 %	- Also do an accuracy comparison for both arches
 
 We have implemented \Name{} and compared it
-with \ReluDiff{}~\cite{PaulsenWW20}, the state-of-the-art tool for
+with \ReluDiff{}~\cite{paulsen2020reludiff}, the state-of-the-art tool for
 differential verification of neural networks.
 %
 \Name{} builds upon the codebase of \ReluDiff{}~\cite{reludiffrepo},
@@ -1260,9 +1267,10 @@ to \ReluDiff{} upgraded with \Neurify{}'s bounds.
 \subsection{Benchmarks}
 
 Our benchmarks consist of the 49 feed-forward neural networks used by
-Paulsen et al.~\cite{PaulsenWW20}, taken from three applications:
+Paulsen et al.~\cite{paulsen2020reludiff}, taken from three applications:
 aircraft collision avoidance, image classification, and human activity
-recognition. We briefly describe them here. As in Paulsen et al.~\cite{PaulsenWW20}, the second
+recognition. We briefly describe them here. As in Paulsen et
+al.~\cite{paulsen2020reludiff}, the second
 network $ f' $ is generated by truncating the edge weights of $f$ from
 32 bit to 16 bit floats.
 
@@ -1313,7 +1321,7 @@ with an AMD Ryzen Threadripper 2950X 16-core processor, with a
 
 
 While we could try and adapt a single-network verification tool to our
-task as done previously~\cite{PaulsenWW20}, we note that \ReluDiff{}
+task as done previously~\cite{paulsen2020reludiff}, we note that \ReluDiff{}
 has been shown to significantly outperform (by several orders of
 magnitude) this naive approach.
 
@@ -1434,7 +1442,7 @@ $\varphi_{15}$  & 2     & 0     & 579.4         & 0     & 2     & 3600.0        
 
 
 For ACAS networks, we consider two different sets of properties,
-namely the original properties from Paulsen et al.~\cite{PaulsenWW20}
+namely the original properties from Paulsen et al.~\cite{paulsen2020reludiff}
 where $ \epsilon = 0.05 $, and the same properties but with $ \epsilon
 = 0.01 $.  We emphasize that, while verifying $ \epsilon = 0.05 $ is
 useful, this means that the output value can vary by up to
@@ -1483,7 +1491,7 @@ the total 142 verification tasks.
 \end{figure*}
 
 For MNIST, we focus on the 4x1024 network, which is the largest
-network considered by Paulsen et al.~\cite{PaulsenWW20}.  In contrast,
+network considered by Paulsen et al.~\cite{paulsen2020reludiff}.  In contrast,
 since the smaller networks, namely 3x100 and 2x512 networks, were
 handled easily by both tools, we omit their results.
 %
@@ -1682,79 +1690,84 @@ perturbation increases the overall width of the delta intervals.
 %We also focus on feed-forward ReLU networks. ReLU activations are preferable in safety critical systems because they are the most amenable to verification. Still, much previous work~\cite{SinghGPV19, SinghGPV19iclr, zhang2018efficient} has shown that convex approximations can be extended non-linear activations as well. We believe \Name{} can be extended as such too.
 
 
-\section{Related Work}
-\label{neurodiff:sec:related}
-
-
-% Single network verification
-% - complete techniques
-Aside from \ReluDiff{}~\cite{PaulsenWW20}, the most closely related to
-our work are those that focus on verifying properties of single
-networks as opposed to two or more networks. These verification
-approaches can be broadly categorized into those that use exact,
-constraint solving-based techniques and those that use approximations.
-
-
-On the constraint solving side, several works have adapted
-off-the-shelf solvers~\cite{CarliniW17, tjeng2019evaluating,
-BastaniILVNC16, Ehlers17, baluta2019quantitative}, or even implemented
-solvers specifically for neural networks~\cite{KatzBDJK17,
-KatzHIJLLSTWZDK19}.
+%\section{Related Work}
+%\label{neurodiff:sec:related}
 %
-On the approximation side, many use techniques that fit into the framework of abstract interpretation~\cite{CousotC77}. For example, many works have leveraged abstract domains such as intervals~\cite{WangPWYJ18, WengZCSHDBD18, zhang2018efficient, JulianKO18}, polyhedra~\cite{Singh2019krelu, SinghGPV19}, and zonotopes~\cite{SinghGPV19iclr, GehrMDTCV18}.
-
-
-In addition, these verification techniques have also been
-combined~\cite{SinghGPV19iclr, WangPWYJ18nips, HuangKWW17}, or
-entirely different approaches~\cite{RuanHK18, DvijothamSGMK18,
-GopinathKPB18}, such as bounding a network's lipschitz constant, have
-been studied. These verification techniques can also be integrated
-into the training process to produce more robust and easier to verify
-networks~\cite{FischerBDGZV19, MirmanGV18, WongK18,
-balunovic2020adversarial}. These works are orthogonal, though we
-believe their techniques can be adapted to our domain.
-
-
-% Various heuristic based approaches, focus on discovering but not proving the absence of adversarial examples
-A related but tangential line of work focuses on discovering
-interesting behaviors of neural networks, though without any
-guarantees.
 %
-Most closely related to our work are differential testing
-techniques~\cite{xie2019diffchaser, PeiCYJ17, MaLLZG18}, which focus
-on finding disagreements between a set of networks.
+%% Single network verification
+%% - complete techniques
+%Aside from \ReluDiff{}~\cite{paulsen2020reludiff}, the most closely related to
+%our work are those that focus on verifying properties of single
+%networks as opposed to two or more networks. These verification
+%approaches can be broadly categorized into those that use exact,
+%constraint solving-based techniques and those that use approximations.
 %
-However, these techniques do not attempt to prove the equivalence or
-similarity of multiple networks.
+%
+%On the constraint solving side, several works have adapted
+%off-the-shelf solvers~\cite{CarliniW17, tjeng2019evaluating,
+%BastaniILVNC16, Ehlers17, baluta2019quantitative}, or even implemented
+%solvers specifically for neural networks~\cite{KatzBDJK17,
+%KatzHIJLLSTWZDK19}.
+%%
+%On the approximation side, many use techniques that fit into the framework of
+%abstract interpretation~\cite{CousotC77}. For example, many works have leveraged
+%abstract domains such as intervals~\cite{WangPWYJ18, WengZCSHDBD18,
+%zhang2018efficient, JulianKO18}, polyhedra~\cite{Singh2019krelu, SinghGPV19}, and
+%zonotopes~\cite{SinghGPV19iclr, GehrMDTCV18}.
+%
+%
+%In addition, these verification techniques have also been
+%combined~\cite{SinghGPV19iclr, WangPWYJ18nips, HuangKWW17}, or
+%entirely different approaches~\cite{RuanHK18, DvijothamSGMK18,
+%GopinathKPB18}, such as bounding a network's lipschitz constant, have
+%been studied. These verification techniques can also be integrated
+%into the training process to produce more robust and easier to verify
+%networks~\cite{FischerBDGZV19, MirmanGV18, WongK18,
+%balunovic2020adversarial}. These works are orthogonal, though we
+%believe their techniques can be adapted to our domain.
+%
+%
+%% Various heuristic based approaches, focus on discovering but not proving the
+%%absence of adversarial examples
+%A related but tangential line of work focuses on discovering
+%interesting behaviors of neural networks, though without any
+%guarantees.
+%%
+%Most closely related to our work are differential testing
+%techniques~\cite{xie2019diffchaser, PeiCYJ17, MaLLZG18}, which focus
+%on finding disagreements between a set of networks.
+%%
+%However, these techniques do not attempt to prove the equivalence or
+%similarity of multiple networks.
+%
+%Other works are more geared towards single network testing, and use
+%white-box testing techniques~\cite{ma2018deepgauge, xie2019deephunter,
+%SunWRHKK18, TianPJR18, odena2018tensorfuzz}, such as neuron coverage
+%statistics, to assess how well a network has been tested, and also
+%report interesting behaviors. Both of these can be thought of as
+%adapting software engineering techniques to machine learning.
+%
+%
+%In addition, many works use machine learning techniques, such as
+%gradient optimization, to find interesting behaviors, such as
+%adversarial examples\cite{KurakinGB17a, madry2017towards, NguyenYC15,
+%XuQE16, Moosavi-Dezfooli16}. These interesting behaviors can then be
+%used to retrain the network to improve
+%robustness~\cite{GoodfellowSS15, RaghunathanSL18}. Again, these
+%techniques do not provide guarantees, though we believe they could be
+%integrated into \Name{} to quickly find counterexamples.
+%
+%Finally, our work draws inspiration from classic software engineering
+%techniques, such as regression testing~\cite{rothermel1997safe},
+%differential assertion checking~\cite{lahiri2013differential},
+%differential fuzzing~\cite{NilizadehNP19}, and incremental symbolic
+%execution~\cite{Person11,GuoKW16}, where one version of a program is
+%used as an ``oracle'', to more efficiently test or verify a new
+%version of the same program.  In our case, $ f $ can be thought of as
+%the oracle, while $ f' $ is the new version.
 
-Other works are more geared towards single network testing, and use
-white-box testing techniques~\cite{ma2018deepgauge, xie2019deephunter,
-SunWRHKK18, TianPJR18, odena2018tensorfuzz}, such as neuron coverage
-statistics, to assess how well a network has been tested, and also
-report interesting behaviors. Both of these can be thought of as
-adapting software engineering techniques to machine learning.
 
-
-In addition, many works use machine learning techniques, such as
-gradient optimization, to find interesting behaviors, such as
-adversarial examples\cite{KurakinGB17a, madry2017towards, NguyenYC15,
-XuQE16, Moosavi-Dezfooli16}. These interesting behaviors can then be
-used to retrain the network to improve
-robustness~\cite{GoodfellowSS15, RaghunathanSL18}. Again, these
-techniques do not provide guarantees, though we believe they could be
-integrated into \Name{} to quickly find counterexamples.
-
-Finally, our work draws inspiration from classic software engineering
-techniques, such as regression testing~\cite{rothermel1997safe},
-differential assertion checking~\cite{lahiri2013differential},
-differential fuzzing~\cite{NilizadehNP19}, and incremental symbolic
-execution~\cite{Person11,GuoKW16}, where one version of a program is
-used as an ``oracle'', to more efficiently test or verify a new
-version of the same program.  In our case, $ f $ can be thought of as
-the oracle, while $ f' $ is the new version.
-
-
-\section{Conclusions}
+\section{Summary}
 \label{neurodiff:sec:conclusion}
 
 We have presented \Name{}, a scalable differential verification

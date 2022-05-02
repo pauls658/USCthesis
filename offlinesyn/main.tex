@@ -299,9 +299,11 @@ f_0 =
 $ f_i = \sigma(f_{i-1} \cdot \mathbf{W}_i + \mathbf{b}_i) $
 which can be applied recursively until the output layer of the network is reached.
 
-Initially, common choices for the activation function $ \sigma(x) $ were $ ReLU(x) = max(0, x) $, $
-sigmoid(x) = \frac{e^x}{e^x + 1} $, and $ tanh(x) = \frac{e^x - e^{-x}}{e^x +
-e^{-x}}  $, however the field has advanced rapidly in recent years and, as a result,
+Initially, common choices for the activation function $ \sigma(x) $ were $
+ReLU(x) $  $ = $  $ max(0, x) $, $
+sigmoid(x) $  $ = $  $ \frac{e^x}{e^x + 1} $, and $ tanh(x) $  $ = $  $ \frac{e^x
+- e^{-x}}{e^x + e^{-x}}  $, however the field has advanced rapidly in recent
+years and, as a result,
 automatically discovering novel activations has become a
 research subfield of its own~\cite{ramachandran2017searching}. Many recently proposed activations,
 such as Swish and GELU~\cite{ramachandran2017searching,hendrycks2016gaussian},
@@ -519,7 +521,8 @@ This is the same as requiring that the following condition does
 \mathcal{G}_{b_u}(l,u)
 \end{gather*}
 The formula above expresses the search for a counterexample, i.e., an input interval $
-[l, u] $ such that $ \mathcal{G}_{a_u}(l, u) \cdot x + \mathcal{G}_{b_u}(l, u)
+[l, u] $ such that $ \mathcal{G}_{a_u}(l, u) $  $ \cdot $  $ x + $  $
+\mathcal{G}_{b_u}(l, u)
 $ is not a sound upper bound of $\sigma(x) $ over the interval $ [l, u] $.
 %
 Thus, if the above formula is unsatisfiable, the soundness of the coefficient
@@ -779,7 +782,8 @@ computing the partition below.
 \paragraph{Defining the Boxes}
 
 We first define a constant parameter $ c_s $, which is the width and height
-of each box in the partition of $ I_x $. In Figure~\ref{offlinesyn:fig:partition},
+of each box in the partition of $ I_x $. In
+Figure~\ref{offlinesyn:fig:partition},
 $ c_s =
 1 $. The benefits of using a smaller $ c_s $ value is two-fold. First, it allows
 us to more accurately choose the proper template (two-point or tangent) for a
@@ -814,7 +818,8 @@ assigning templates exist. We use this strategy simply because it is efficient.
 We also note that some boxes in the partition may contain invalid intervals
 (i.e., we have $ [l, u] \in I_{i,j} $ where $ u < l $). These invalid intervals
 are filtered out during the final verification step  described in
-Section~\ref{offlinesyn:sec:soundness}, and thus do not affect the soundness of our
+Section~\ref{offlinesyn:sec:soundness}, and thus do not affect the soundness of
+our
 algorithm.
 
 \subsection{Learning the Function $ g(l, u) $}\label{offlinesyn:sec:learning}
@@ -901,7 +906,7 @@ That is, we require that the following condition (almost) holds:
 	(\sigma'(t) = a_u) \wedge (\sigma'(t)\cdot t + \sigma(t) = b_u)
 \end{gather*}
 To solve the above problem, we use local optimization techniques (specifically a
-modified Powell's method~\cite{powell1964efficient} implemented in
+modified Powell's method \cite{powell1964efficient} implemented in
 SciPy~\cite{2020SciPy-NMeth}, but most common techniques would work) to find a
 solution to $ \sigma'(t) = a_u $.
 
@@ -1492,46 +1497,49 @@ templates).
 \end{table}
 %\end{wrapfigure}
 
-\section{Related Work}
-\label{offlinesyn:sec:related}
-
-Most closely related to our work are those that leverage
-interval-bounding techniques to conduct neural network verification.
-Seminal works in this area can
-either be thought of as explicit linear bounding, or linear bounding
-with some type of restriction (usually for efficiency). Among the explicit
-linear bounding techniques are the ones used in
-~\DeepPoly{}~\cite{SinghGPV19},~\autolipra{}~\cite{autolipra},
-~\Neurify{}~\cite{WangPWYJ18nips}, and
-similar
-tools~\cite{balunovic2019certifying,du2021cert,ko2019popqorn,zhang2018efficient,WengZCSHDBD18,wu2021tightening,ryou2021scalable,shi2020robustness}.
-On the other hand,  techniques using Zonotopes~\cite{GehrMDTCV18,MirmanGV18} and
-symbolic intervals~\cite{WangPWYJ18} can be thought of as restricted linear
-bounding. Such approaches have an advantage in scalability, although they
-may sacrifice completeness and accuracy. In addition, recent work leverages
-semi-definite approximations~\cite{hu2020reach}, which allow for more
-expressive, nonlinear lower and upper bounds. In addition, linear
-approximations are used in nonlinear programming and
-optimization~\cite{chabert2009contractor,trombettoni2011inner}.
-However, to the best of our
-knowledge, none of these prior works attempt to automate the process of crafting
-the bound generator function $\mathcal{G}(l, u) $.
-
-
-Less closely related are neural network verification approaches based
-on solving systems of linear
-constraints~\cite{KatzBDJK17,KatzHIJLLSTWZDK19,Ehlers17,HuangKWW17,BastaniILVNC16,HuangKWW17,baluta2019quantitative,tjeng2019evaluating}.
-Such approaches typically only apply to networks with piece-wise-linear
-activations such as ReLU and max pooling, for which there is little need to
-automate any part of the verification algorithm's design (at least with respect
-to the activation functions). They do not handle novel activation functions such as the ones concerned in our work.  These approaches have the advantage of being
-complete, although they tend to be less scalable than interval analysis based
-approaches.
-
-
-Finally, we note that there are many works built off the initial linear approximation
-approaches, thus highlighting the importance of designing tight and sound linear
-approximations in general~\cite{Singh2019krelu,SinghGPV19iclr,WangPWYJ18nips,tran2019star,tran2020verification}.
+%\section{Related Work}
+%\label{offlinesyn:sec:related}
+%
+%Most closely related to our work are those that leverage
+%interval-bounding techniques to conduct neural network verification.
+%Seminal works in this area can
+%either be thought of as explicit linear bounding, or linear bounding
+%with some type of restriction (usually for efficiency). Among the explicit
+%linear bounding techniques are the ones used in
+%~\DeepPoly{}~\cite{SinghGPV19},~\autolipra{}~\cite{autolipra},
+%~\Neurify{}~\cite{WangPWYJ18nips}, and
+%similar
+%tools~\cite{balunovic2019certifying,du2021cert,ko2019popqorn,zhang2018efficient,WengZCSHDBD18,wu2021tightening,ryou2021scalable,shi2020robustness}.
+%On the other hand,  techniques using Zonotopes~\cite{GehrMDTCV18,MirmanGV18} and
+%symbolic intervals~\cite{WangPWYJ18} can be thought of as restricted linear
+%bounding. Such approaches have an advantage in scalability, although they
+%may sacrifice completeness and accuracy. In addition, recent work leverages
+%semi-definite approximations~\cite{hu2020reach}, which allow for more
+%expressive, nonlinear lower and upper bounds. In addition, linear
+%approximations are used in nonlinear programming and
+%optimization~\cite{chabert2009contractor,trombettoni2011inner}.
+%However, to the best of our
+%knowledge, none of these prior works attempt to automate the process of crafting
+%the bound generator function $\mathcal{G}(l, u) $.
+%
+%
+%Less closely related are neural network verification approaches based
+%on solving systems of linear
+%constraints~\cite{KatzBDJK17,KatzHIJLLSTWZDK19,Ehlers17,HuangKWW17,BastaniILVNC16,HuangKWW17,baluta2019quantitative,tjeng2019evaluating}.
+%Such approaches typically only apply to networks with piece-wise-linear
+%activations such as ReLU and max pooling, for which there is little need to
+%automate any part of the verification algorithm's design (at least with respect
+%to the activation functions). They do not handle novel activation functions such
+%as the ones concerned in our work.  These approaches have the advantage of being
+%complete, although they tend to be less scalable than interval analysis based
+%approaches.
+%
+%
+%Finally, we note that there are many works built off the initial linear
+%approximation
+%approaches, thus highlighting the importance of designing tight and sound linear
+%approximations in
+%general~\cite{Singh2019krelu,SinghGPV19iclr,WangPWYJ18nips,tran2019star,tran2020verification}.
 
 
 %\paragraph{Future Work} An interesting line of future work would be
@@ -1544,7 +1552,7 @@ approximations in general~\cite{Singh2019krelu,SinghGPV19iclr,WangPWYJ18nips,tra
 %examples, or using counterexample guided techniques.
 
 
-\section{Conclusions}
+\section{Summary}
 \label{offlinesyn:sec:conclusion}
 
 We have presented the first method for statically

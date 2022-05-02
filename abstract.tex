@@ -1,35 +1,51 @@
 Neural networks have become an integral component of cyber-physical systems, such
-as autonomous vehicles, automated delivery robots, factory robots, and they have
-great potential in many other systems as well. However, flaws in these models are
-frequently discovered, and thus in high-stakes applications, ensuring their
-safety, robustness, and reliability is crucial. While many prior works have been
-devoted to this problem domain, they have only considered a limited number of
-safety properties,
-%they primarily focus on analyzing a single
-%network in isolation,
-and they only consider the most common neural network
-architectures and activation functions.
+as autonomous vehicles, automated delivery robots, and factory robots, and they
+have great potential in many other systems as well.
+%
+However, flaws in these models are frequently discovered, and thus in high-stakes
+applications, ensuring their safety, robustness, and reliability is crucial.
+%
+While many prior works have been devoted to this problem domain, they are limited
+because they primarily focus on a few narrowly defined safety properties, and
+they only focus on the most common neural network architectures and activation
+functions.
 
 This dissertation addresses these limitations by (1) studying a new class of
-properties -- differential properties -- for neural networks, and (2) proposing
-efficient algorithms applicable to general neural network architectures and
-activation functions for formally proving/disproving them. I
-focus on neural network equivalence as the canonical example for a
-differential property, however other safety properties related to input
-sensitivity and stability analysis of neural networks can be cast as differential
-properties as well.
+safety properties -- \textit{differential} properties -- for neural networks,
+%
+and (2)  developing \textit{accurate} algorithms for formally proving (or
+disproving) them that are applicable to \textit{general} neural network
+architectures and
+activation functions.
+%
+We focus on neural network equivalence as the canonical example for a
+differential property, however other safety properties concerning input
+sensitivity and stability can be cast as differential properties as well.
 
-First, I formalize the equivalence problem for neural networks, and then develop
+This dissertation makes four key contributions towards developing
+\textit{accurate} and \textit{general} algorithms for proving differential
+properties.
+%
+First, we formalize the equivalence problem for neural networks, and then develop
 a novel technique based on interval analysis for proving equivalence of any two
-structurally similar feed-forward DNNs with ReLU activations. The key insight in
-my technique is in deriving formulas that relate the intermediate computations of
-the two neural networks, which greatly improves the accuracy of the analysis.
-Second, I then develop novel symbolic technique that further improve the
-analysis' accuracy. I demonstrate the effectiveness of these two techniques in
+structurally similar feed-forward neural networks with ReLU activations.
+%
+The key insight in
+this technique is in deriving formulas that relate the intermediate computations
+of the two neural networks, which allows us to accurately bound the maximum
+difference between the two networks over all inputs.
+%
+Second, we then develop novel symbolic technique that further improves the
+analysis' accuracy.
+%
+We demonstrate the effectiveness of these two techniques in
 proving equivalence of compressed neural networks with respect to the original
-neural networks. Finally, I propose two techniques for automatically synthesizing
-linear approximations for arbitrary nonlinear functions, thus allowing my
-differential techniques to apply to architectures and activations beyond
-feed-forward ReLU networks. I then demonstrate that the synthesized linear
-approximations significantly improve accuracy versus prior hand-crafted
-approximations.
+neural networks.
+%
+Finally, we propose two novel techniques for automatically synthesizing
+linear approximations for arbitrary nonlinear functions, thus allowing our
+differential techniques to apply to architectures and activation functions beyond
+feed-forward ReLU networks.
+%
+We demonstrate that our synthesized linear approximations significantly improve
+accuracy versus the best alternative techniques.

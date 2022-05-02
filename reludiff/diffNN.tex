@@ -49,7 +49,6 @@
 %\newcommand\ReluIN[1]{.}
 %\newcommand\EdgeOUTdelta[1]{.}
 
-
 As deep neural networks (DNNs) make their way into safety critical
 systems such as aircraft collision avoidance~\cite{JulianKO18} and
 autonomous driving \cite{bojarski2016end}, where errors may lead to
@@ -258,20 +257,17 @@ tools in terms of both speed and accuracy.
 \end{itemize}
 
 
-The remainder of the paper is organized as follows.  First, we use
+The remainder of the chapter is organized as follows.  First, we use
 examples to motivate our method in Section~\ref{sec:motivation}.
 Then, we review the basics of neural networks and interval analysis in
 Section~\ref{sec:prelims}.  Next, we present our method for the
 forward pass in Section~\ref{sec:forward-pass}, followed by our method
 for the backward pass in Section~\ref{sec:backward-pass}.  We present
-our experimental results in Section~\ref{sec:experiment}.  We review
-the related work in Section~\ref{sec:related}.  Finally, we give our
-conclusions in Section~\ref{sec:conclusion}.
+our experimental results in Section~\ref{sec:experiment}. Finally, we
+summarize the contributions of this chapter in Section~\ref{sec:conclusion}.
 
 
-
-
-\section{Motivation}
+\section{Background and Overview}
 \label{sec:motivation}
 
 We illustrate the problems of existing verification tools using
@@ -788,7 +784,8 @@ These are used in the refinement phase (Section~\ref{sec:backward-pass}) to
 determine which input neuron to refine.
 
 We omit discussion of computing $ \ReluIN{n_{k,j}} $ and $ \ReluOUT{n_{k,j}} $
-because it has been studied in previous work~\cite{WangPWYJ18}. We focus on computing
+because it has been studied in previous work \cite{WangPWYJ18}. We focus on
+computing
 $ \ReluINdelta{n_{k,j}} $ and $ \ReluOUTdelta{n_{k,j}} $ in the following section.
 
 \begin{algorithm}[t]
@@ -1051,7 +1048,7 @@ difference is $[0,0] - [0, \UBconcrete{\ReluIN{\n}}]$.
 (2) If the ReLU in $ \np $ is \emph{always activated}, the
 difference is $\ReluIN{\np} - [0,
 \UBconcrete{\ReluIN{\n}}]$, which is the same as
-$[ \LB{\ReluIN{\np}}-\UBconcrete{\ReluIN{\n}}, \UB{\ReluIN{\np}}
+$[ \LB{\ReluIN{\np}}-\UBconcrete{\ReluIN{\n}}, $  $ \UB{\ReluIN{\np}}
 ]$.
 %
 %
@@ -1913,62 +1910,62 @@ possible~\cite{WangPWYJ18nips}. However, we leave these extensions for
 future work.
 
 
-\section{Related Work}
-\label{sec:related}
-
-While there is a large and growing body of work on detecting
-adversarial examples for neural networks, they are typically based on
-heuristic search or other dynamic analysis techniques such as
-testing~\cite{CarliniW17,PeiCYJ17,TianPJR18,SunWRHKK18,WickerHK18,MaLLZG18}.
-Although they are effective in finding security vulnerabilities and
-violations of other critical properties, we consider them as being
-orthogonal to formal verification.  The reason is because these
-techniques are geared toward finding violations, as opposed to proving
-the absence of violations.
-
-
-Early work on formal verification of deep neural networks relies on
-using SMT solvers~\cite{HuangKWW17,Ehlers17}, or SMT solving
-algorithms~\cite{KatzBDJK17,KatzHIJLLSTWZDK19} designed for
-efficiently reasoning about constraints from the ReLU activation
-function. Along this line, a state-of-the-art tool
-is \Reluplex{}~\cite{KatzBDJK17}.  In theory, these SMT solver based
-techniques can solve the neural network verification problem in a
-sound and complete fashion, i.e., returning a proof if and only if the
-network satisfies the property.  In practice, however, their
-scalability is often limited and they may run out of time for larger
-networks.
-
-
-Another line of work on verification of deep neural networks is based
-on interval analysis, which can be more scalable than
-SMT solver based techniques~\cite{WangPWYJ18}.  They compute
-conservative bounds on the value ranges of the neurons and output
-signals for an input region of interest.  They also exploit the fact
-that neural networks are Lipschitz continuous~\cite{RuanHK18} to
-ensure that the interval analysis results are
-sound.  \ReluVal{}~\cite{WangPWYJ18} and \DeepPoly{}~\cite{SinghGPV19}
-are two representatives, among other similar
-tools~\cite{WangPWYJ18nips,SinghGPV19iclr,MirmanGV18,GehrMDTCV18,FischerBDGZV19}.
-
-
-
-In addition to formal verification, there are techniques for
-evaluating and certifying the robustness of neural
-networks~\cite{BastaniILVNC16,CarliniW17,WengZCSHDBD18,DvijothamSGMK18}
-or certified defense against adversarial
-examples~\cite{RaghunathanSL18,WongK18}.
+%\section{Related Work}
+%\label{sec:related}
 %
-However, neither they nor the existing verification techniques
-were designed for \emph{differential verification} of two closely
-related neural networks, which is the focus of this paper.
+%While there is a large and growing body of work on detecting
+%adversarial examples for neural networks, they are typically based on
+%heuristic search or other dynamic analysis techniques such as
+%testing~\cite{CarliniW17,PeiCYJ17,TianPJR18,SunWRHKK18,WickerHK18,MaLLZG18}.
+%Although they are effective in finding security vulnerabilities and
+%violations of other critical properties, we consider them as being
+%orthogonal to formal verification.  The reason is because these
+%techniques are geared toward finding violations, as opposed to proving
+%the absence of violations.
 %
 %
-As shown by the examples in Section~\ref{sec:motivation} and the
-experimental results in Section~\ref{sec:experiment}, directly
-applying these techniques to differential verification is often
-extremely inefficient.  In contrast, our method is designed
-specifically for solving the differential verification problem efficiently.
+%Early work on formal verification of deep neural networks relies on
+%using SMT solvers~\cite{HuangKWW17,Ehlers17}, or SMT solving
+%algorithms~\cite{KatzBDJK17,KatzHIJLLSTWZDK19} designed for
+%efficiently reasoning about constraints from the ReLU activation
+%function. Along this line, a state-of-the-art tool
+%is \Reluplex{}~\cite{KatzBDJK17}.  In theory, these SMT solver based
+%techniques can solve the neural network verification problem in a
+%sound and complete fashion, i.e., returning a proof if and only if the
+%network satisfies the property.  In practice, however, their
+%scalability is often limited and they may run out of time for larger
+%networks.
+%
+%
+%Another line of work on verification of deep neural networks is based
+%on interval analysis, which can be more scalable than
+%SMT solver based techniques~\cite{WangPWYJ18}.  They compute
+%conservative bounds on the value ranges of the neurons and output
+%signals for an input region of interest.  They also exploit the fact
+%that neural networks are Lipschitz continuous~\cite{RuanHK18} to
+%ensure that the interval analysis results are
+%sound.  \ReluVal{}~\cite{WangPWYJ18} and \DeepPoly{}~\cite{SinghGPV19}
+%are two representatives, among other similar
+%tools~\cite{WangPWYJ18nips,SinghGPV19iclr,MirmanGV18,GehrMDTCV18,FischerBDGZV19}.
+%
+%
+%
+%In addition to formal verification, there are techniques for
+%evaluating and certifying the robustness of neural
+%networks~\cite{BastaniILVNC16,CarliniW17,WengZCSHDBD18,DvijothamSGMK18}
+%or certified defense against adversarial
+%examples~\cite{RaghunathanSL18,WongK18}.
+%%
+%However, neither they nor the existing verification techniques
+%were designed for \emph{differential verification} of two closely
+%related neural networks, which is the focus of this paper.
+%%
+%%
+%As shown by the examples in Section~\ref{sec:motivation} and the
+%experimental results in Section~\ref{sec:experiment}, directly
+%applying these techniques to differential verification is often
+%extremely inefficient.  In contrast, our method is designed
+%specifically for solving the differential verification problem efficiently.
 
 
 
@@ -1994,7 +1991,7 @@ network, and the original network can be thought of as an oracle.
 
 
 
-\section{Conclusion}
+\section{Summary}
 \label{sec:conclusion}
 
 We have presented a new method, named \diffNN{}, for differential

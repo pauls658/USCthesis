@@ -28,7 +28,7 @@ represent the intermediate neurons of the two networks. We demonstrated
 that this new symbolic technique further improves both the accuracy and
 runtime for proving equivalence.
 
-In Chapter~\ref{ch:onlinesyn}, we solved in a key challenge in making
+In Chapter~\ref{ch:onlinesyn}, we solved a key challenge in making
 differential verification general, by proposing a technique for
 automatically synthesizing linear approximations for arbitrary functions.
 To implement this technique, we designed an efficient synthesis algorithm
@@ -60,12 +60,13 @@ $ for all $ x \in X $.
 \textit{Hyperproperties.} Related to differential properties are
 \textit{hyperproperties}. Here we give an example of a hyperproperty, which
 we believe has not been considered by prior work in the context of neural
-network verification. Informally, say we have a neural network that sensor
-inputs from an autonomous vehicle, and outputs a steering direction. A
-property we may be interested in proving is: ``given that in the previous
+network verification. Informally, say we have a neural network that takes sensor
+inputs from an autonomous vehicle and outputs a steering direction. A
+property we may want to prove is: ``given that in the previous
 time-step, the neural network output a right turn, in the current
 time-step, the neural network should continue to output a right turn or
-continue straight''.
+continue straight''. This property ensures that the car's driving path is smooth, and
+does not unnecessarily make sharp turns.
 
 
 Formally, let $ f(x) $ be the neural network controller that outputs a
@@ -75,12 +76,12 @@ the rotation of the steering wheel, so that $ f(x) < 0 $ is a left turn, $
 f(x) > 0 $ is a right turn, and $ f(x) = 0 $ goes straight. Furthermore,
 let $ x_t $ be the input given to the neural network at time-step $ t $.
 The property we wish to prove is that $ f(x_t) > 0 \implies f(x_{t+1}) \geq
-0) $. Here, $ x_{t+1} $ would be defined by $ x_t $ and the system
+0) $. Here, $ x_{t+1} $ would be defined by a function of $ x_t $ and the system
 dynamics. See e.g.~\cite{hu2020reach} for an example.
 
 \subsection{Other Uses for Equivalence Verification}
-While we only used our proved equivalence of compressed networks with
-respect to their original networks, there are other practical use cases for
+In our work, we only proved equivalence of compressed networks with
+respect to their original networks, but there are other practical use cases for
 proving equivalence. A recent example is \textit{neural network
 repair}~\cite{yang2021neural,usman2021nn,sotoudeh2021provable,dong2021towards}.
  Typically,
@@ -94,17 +95,16 @@ technique excels. Yet another application would be avoiding
 performing online training of neural networks.
 
 \subsection{Synthesizing Other Types of Approximations}
-Many types approximations beyond linear approximation have been used in
-neural network verification. Automatically synthesizing these
-approximations would be interesting as well. We highlight some of these
-below.
+Besides linear approximations, many types approximations have been used in
+neural network verification. In all cases, experts hand-crafted the approximations, and
+thus automatically synthesizing these approximations would be interesting as well. We
+highlight other types of approximations used in prior work.
 
 \textit{Zonotopes.} Zonotopes~\cite{ziegler2012lectures} have been used
 extensively in neural network
-verification~\cite{singh2018fast,bonaert2021fast,muller2021effective} are
-very similar to linear approximations, with the main difference being that
-the slopes of
-the lower and upper bound must be the same. Zonotopes could be synthesized
+verification~\cite{singh2018fast,bonaert2021fast,muller2021effective}. Zonotopes are
+essentially a restricted linear approximation, with the restriction being that
+the slopes of the lower and upper bound must be the same. Zonotopes could be synthesized
 both online and offline. For online synthesis, one would only need to
 devise a suitable linear program for synthesizing the candidate zonotope,
 as in Section~\ref{onlinesyn:sec:method-1}. Verifying that the zonotope is
@@ -120,7 +120,7 @@ improving accuracy of approximations in the context of neural network
 verification has been \textit{multi-neuron}
 approximations~\cite{Singh2019krelu,muller2021prima}. Whereas our online
 and offline synthesis techniques consider only a single neuron in
-isolation, prior work has shown computing approximations for multiple
+isolation, prior work has shown that computing approximations for multiple
 neurons jointly can significantly improve accuracy. However, these
 approximations are hand-crafted by experts, and thus could benefit from
 synthesis.
@@ -146,10 +146,10 @@ computed linear approximations will be looser than necessary.
 
 A potential improvement would be to use \textit{counter-examples} to refine
 the synthesized approximation when the maximum violation is above some
-threshold. The underlying solver returns an input that maximizes
-Equation~\ref{offlinesyn:eq:opt} (i.e. a counter-example), which provides a
+threshold. The underlying solver returns an input (i.e. a counter-example) that
+maximizes Equation~\ref{offlinesyn:eq:opt}, which provides a
 hint at the inputs that are causing the violation to be large. We could
 then take this counter-example and attempt to reduce the violation for this
 input (and nearby inputs), either by retraining the neural network, or
 re-partitioning the input interval space. This could be done repeatedly
-until the maximum violation is reduced.
+until the maximum violation is sufficiently reduced.
