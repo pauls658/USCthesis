@@ -2,7 +2,7 @@
 \declarecommand\jwnote[1]{\textcolor{purple}{{\textbf{Jingbo Says: #1}}}}
 \declarecommand\cwnote[1]{\textcolor{red}{{\textbf{Chao Says: #1}}}}
 
-\declarecommand{\Name}{\textsc{LinSyn}}
+\declarecommand{\linsyn}{\textsc{LinSyn}}
 \declarecommand{\ReluDiff}{\textsc{ReluDiff}}
 \declarecommand{\ReluVal}{\textsc{ReluVal}}
 \declarecommand{\DeepPoly}{\textsc{DeepPoly}}
@@ -1003,10 +1003,10 @@ For a given $ I_{i, j} $, we must ensure that its corresponding coefficient
 generator functions $ \mathcal{G}_{a_u}(l ,u)$ and $ \mathcal{G}_{b_u}(l ,u) $
 are sound, or in other
 words, that the following condition does \textbf{not} hold:
-\begin{gather*}\label{offlinesyn:eq:sound-opt}
+\begin{gather}\label{offlinesyn:eq:sound-opt}
 \exists [l, u] \in I_{i, j}, \; x \in [l, u] ~.~
 \sigma(x) > \mathcal{G}_{a_u}(l, u)\cdot x + \mathcal{G}_{b_u}(l, u)
-\end{gather*}
+\end{gather}
 We ensure the above condition does not hold (the formula is unsatisfiable) by bounding the \textit{maximum violation} on
 the clause $ \sigma(x) > \mathcal{G}_{a_u}(l, u)\cdot x + \mathcal{G}_{b_u}(l,
 u) $,
@@ -1305,38 +1305,33 @@ and $ p = 1/255 $ for CIFAR networks.
 
 \subsection{Experimental Results}
 
-Our experiments were designed to answer the following question: How do our
+Our experiments were designed to answer the following two questions: (1) How do
+our
 synthesized linear approximations compare with other state-of-the-art,
-hand-crafted linear approximation techniques on novel activation functions?
+hand-crafted linear approximation techniques on novel activation functions? and
+(2) how do our synthesized linear approximations compare with the online
+synthesis approach of~\linsyn{}?
 %
 To the best of our
 knowledge,~\autolipra{}~\cite{autolipra} is the only neural network
 verification tool capable of handling the activation functions we considered here
 using static, hand-crafted approximations.
 %
-We primarily focus on comparing the number of verification problems solved
+We primarily focus on comparing the number of verification problems solved.
 %
-and we caution against directly comparing the runtime of our approach
+We caution against directly comparing the runtime of our approach
 against~\autolipra{}, as the latter is highly engineered for parallel computation,
-whereas our approach is not currently engineered to take advantage of parallel computation (although it
-could be).
+whereas our approach is not currently engineered to take advantage of parallel
+computation (although it could be).
+%
+To perform a fair runtime comparison between our approach and~\linsyn{}, we
+limit~\linsyn{} to synthesize linear approximations sequentially (as opposed to
+in parallel, as was done in Chapter~\ref{ch:onlinesyn})).
 %
 We conducted all experiments on an 8-core 2.7GHz processor with 32GB of RAM.
-\footnotetext[1]{\autolipra{} does not have an approximation for $
-	\text{tan}^{-1} $.}
-%
-%\textcolor{red}{We only have one result able (using synthesized bounds for
-%verification). Is it possible to show some statistics about the synthesis
-%part?
-%For example, during synthesis, what's the percentage boxes in
-%$|I_{2pt}|/|I_x|$
-%vs.  $|I_{tan}|/|I_x|$? How many boxes use linear regression and how many use
-%ReLU network to store the $g(l,u)$? How many boxes failed the soundness
-%verification and thus needed to be shifted by $$?  And in general, how
-%much time was spent on each step of the synthesis procedure?}
 
 
-We present results on robustness verification problems in
+We present the comparison of our approach to~\autolipra{} in
 Table~\ref{offlinesyn:tbl:1}.
 The first column shows the dataset and architecture. The next two columns show
 the percentage of the total number of verification problems solved (i.e.,
@@ -1352,7 +1347,8 @@ because it implies that our approach has more accurately approximated the true
 output set, and thus $ \frac{|Y_{ours}|}{|Y_{auto}|} < 1 $ indicates our
 approach is more accurate.
 
-
+\footnotetext[1]{\autolipra{} does not have an approximation for $
+	\text{tan}^{-1} $.}
 \begin{table}[t]
 	\centering
 	\caption{Comparison of the verification results of our approach and \autolipra{}.}
@@ -1381,6 +1377,11 @@ approach is more accurate.
 			\multicolumn{1}{c|}{0.70}          & 289                           &
 			0.22                                              \\ \cline{2-7}
 			\multicolumn{1}{|l|}{}      & 4-Layer CNN with
+			Log Log                                      &
+			\multicolumn{1}{c|}{0.00}         & 38      &
+			\multicolumn{1}{c|}{0.00}          & 174                           &
+			21.29                                              \\ \cline{2-7}
+			\multicolumn{1}{|l|}{}      & 4-Layer CNN with
 			Mish                                      &
 			\multicolumn{1}{c|}{0.00}         & 50       &
 			\multicolumn{1}{c|}{0.28}         & 236                           &
@@ -1406,6 +1407,11 @@ approach is more accurate.
 			\multicolumn{1}{c|}{0.29}          & 419                           &
 			0.21                                              \\ \cline{2-7}
 			\multicolumn{1}{|l|}{}      & 5-Layer CNN with
+			Log Log                                      &
+			\multicolumn{1}{c|}{0.59}         & 97    &
+			\multicolumn{1}{c|}{0.10}          & 168                           &
+			32.31                                              \\ \cline{2-7}
+			\multicolumn{1}{|l|}{}      & 5-Layer CNN with
 			Mish                                      &
 			\multicolumn{1}{c|}{0.00}         & 202      &
 			\multicolumn{1}{c|}{0.29}         & 363                           &
@@ -1427,17 +1433,114 @@ approach is more accurate.
 
 
 We point out three trends in the results. First, our automatically synthesized
-linear approximations always result in more verification problems solved. This
-is because our approach synthesizes a linear approximation specifically for $
-\sigma(x) $, which results in tighter bounds. Second,~\autolipra{} takes longer
+linear approximations almost always result in more verification problems solved
+(except for the Log Log activation). This is because our approach synthesizes a
+linear approximation specifically for $ \sigma(x) $, which results in tighter
+bounds. Second,~\autolipra{} takes longer
 on more complex activations such as GELU and Mish, which have more elementary
 operations than Swish and LiSHT. This occurs because~\autolipra{} has more
 linear approximations to compute (it must compute one for every elementary
 operation before composing the results together). On the other hand, our
 approach computes the linear approximation in one step, and thus does not have
 the additional overhead for the more complex activation functions. Third, our
-approach always computes a much smaller output set, in the range of 2-10X
+approach almost always computes a much smaller output set, in the range of 2-10X
 smaller, which again is a reflection of the tighter linear bounds.
+
+
+\begin{table}[t]
+	\centering
+	\caption{Comparison of the verification results of our approach and
+	\linsyn{}.}
+	\label{offlinesyn:tbl:2}
+	\scalebox{0.9}{
+		\renewcommand{\arraystretch}{1.15}
+
+		\begin{tabular}{|ll|cr|cr|c|}
+			\hline
+			& \multicolumn{1}{c|}{\multirow{2}{*}{Network Architecture}} &
+			\multicolumn{2}{l|}{\linsyn{}}               &
+			\multicolumn{2}{l|}{Our Approach}                           &
+			\multirow{2}{*}{\ \ $ \frac{|Y_{ours}|}{|Y_{linsyn}|}$\ \ } \\
+			\cline{3-6}
+			& \multicolumn{1}{c|}{}                                      &
+			\multicolumn{1}{c|}{\% certified} & time (s) &
+			\multicolumn{1}{l|}{\% certified} & \multicolumn{1}{l|}{time (s)}
+			&                                                   \\ \hline \hline
+			\multicolumn{1}{|l|}{MNIST} & 4-Layer CNN with
+			Swish                                     &
+			\multicolumn{1}{c|}{0.76}         & 2653       &
+			\multicolumn{1}{c|}{0.74}         & 195                           &
+			1.03                                              \\ \cline{2-7}
+			\multicolumn{1}{|l|}{}      & 4-Layer CNN with
+			Gelu                                      &
+			\multicolumn{1}{c|}{0.72}         & 2832      &
+			\multicolumn{1}{c|}{0.70}          & 289                           &
+			1.05                                              \\ \cline{2-7}
+			\multicolumn{1}{|l|}{}      & 4-Layer CNN with
+			Log Log                                      &
+			\multicolumn{1}{c|}{0.24}         & 2963      &
+			\multicolumn{1}{c|}{0.00}          & 174                           &
+			72                                              \\ \cline{2-7}
+			\multicolumn{1}{|l|}{}      & 4-Layer CNN with
+			Mish                                      &
+			\multicolumn{1}{c|}{0.47}         & 3193       &
+			\multicolumn{1}{c|}{0.28}         & 236                           &
+			1.33                                              \\ \cline{2-7}
+			\multicolumn{1}{|l|}{}      & 4-Layer CNN with
+			LiSHT                                     &
+			\multicolumn{1}{c|}{0.79}          & 2884       &
+			\multicolumn{1}{c|}{0.11}          & 289                           &
+			2.09                                              \\ \cline{2-7}
+			\multicolumn{1}{|l|}{}      & 4-Layer CNN with
+			AtanSq                                 &
+			\multicolumn{1}{c|}{0.18}            & 2653        &
+			\multicolumn{1}{c|}{0.16}         & 233                           &
+			1.03                                                 \\ \hline \hline
+			\multicolumn{1}{|l|}{CIFAR} & 5-Layer CNN with
+			Swish                                     &
+			\multicolumn{1}{c|}{0.35}         & 3441       &
+			\multicolumn{1}{c|}{0.35}         & 300                           &
+			0.99                                              \\ \cline{2-7}
+			\multicolumn{1}{|l|}{}      & 5-Layer CNN with
+			Gelu                                      &
+			\multicolumn{1}{c|}{0.31}         & 3755    &
+			\multicolumn{1}{c|}{0.29}          & 419                           &
+			1.06                                              \\ \cline{2-7}
+			\multicolumn{1}{|l|}{}      & 5-Layer CNN with
+			Log Log                                      &
+			\multicolumn{1}{c|}{0.69}         & 2205    &
+			\multicolumn{1}{c|}{0.10}          & 168                           &
+			44.43                                              \\ \cline{2-7}
+			\multicolumn{1}{|l|}{}      & 5-Layer CNN with
+			Mish                                      &
+			\multicolumn{1}{c|}{0.29}         & 4142      &
+			\multicolumn{1}{c|}{0.29}         & 363                           &
+			0.99                                              \\ \cline{2-7}
+			\multicolumn{1}{|l|}{}      & 5-Layer CNN with
+			LiSHT                                     &
+			\multicolumn{1}{c|}{0.00}         & 4049       &
+			\multicolumn{1}{c|}{0.00}          & 303                           &
+			1.18                                              \\ \cline{2-7}
+			\multicolumn{1}{|l|}{}      & 5-Layer CNN with
+			AtanSq                                    &
+			\multicolumn{1}{c|}{0.23}            & 3696        &
+			\multicolumn{1}{c|}{0.22}          & 347                           &
+			1.16                                                 \\ \hline
+		\end{tabular}
+	}
+
+\end{table}
+
+We present the comparison of our approach to~\linsyn{} in
+Table~\ref{offlinesyn:tbl:2}. We can see that our new approach allows us to
+compute the linear approximations 10-20X faster than~\linsyn{}. In addition, our
+approach either matches or comes close to the accuracy of~\linsyn{} on several of
+the activation functions (Swish, Mish, GELU, and Atansq). However, the results
+also
+suggest there is potential for improvement, as shown by the accuracy achieved for
+the Log Log and LiSHT activations. We discuss potential improvements in
+Chapter~\ref{ch:conclusions}.
+
 %\paragraph{Overall Comparison}
 
 %\textcolor{red}{Need to say a few words about CIFAR -- LiSHT, for which our

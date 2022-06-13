@@ -6,7 +6,7 @@ self-driving~\cite{grigorescu2020survey}, however they are being studied for
 aircraft collision avoidance~\cite{JulianKO18}, drone control~\cite{caps2021}, and
 even controllers in medical devices~\cite{tan2021toward}.
 
-While highly performant, neural networks are ``black-boxes.'' Even the smallest neural
+While highly performant, neural networks are ``black-boxes.'' Even small neural
 networks have thousands of parameters, which makes it impossible for a human to
 understand their behavior. In addition, they are notoriously brittle. For
 example, they are known to be vulnerable to \textit{adversarial
@@ -27,9 +27,9 @@ covers the entire space of safety properties.
 
 In this dissertation, we focus on safety properties that are
 \textit{differential} in nature. Informally, a differential safety property
-is a property of two (or more) neural networks or two (or more) executions of a
-single network. Various important safety
-properties are differential in nature, however in this dissertation, we focus on
+is a property of two (or more) neural networks or a property of two (or more)
+executions of a single network. Various important safety
+properties are differential in nature, however, in this dissertation, we focus on
 \textit{equivalence} as the canonical differential property. Informally,
 proving equivalence means showing that two neural networks produce similar outputs given
 the same input.
@@ -89,7 +89,8 @@ Unfortunately, this approach has two major limitations. First, it is not
 $ f''(x) $ because current tools are not designed specifically for proving
 equivalence (or any differential property). Practically, this means that this
 approach either cannot prove equivalence at all, or it cannot do so in a
-reasonable amount of time. Second, this approach is not general because current
+reasonable amount of time. Second, this approach is not \textit{general} because
+current
 verification tools are designed to analyze ``common'' types of neural networks.
 Practically, this means that either their implementations do not support many
 state-of-the-art neural networks, or, again, they compute overly-conservative
@@ -161,12 +162,12 @@ insights for improving the accuracy.
 		\textbf{Insight 1a}        &
 		This approach begins approximating the difference \textit{before}
 		significant approximation errors accumulate. \\ \hline
-		\textbf{Hypothesis 1b}        &
-		Symbolic approximations can further improve the accuracy of the
-		layer-by-layer approximation. \\ \hline
-		\textbf{Insight 1b}        &
-		Symbols capture dependency information, allowing terms to
-		``cancel,'' and thus reducing approximation errors. \\ \hline
+%		\textbf{Hypothesis 1b}        &
+%		Symbolic approximations can further improve the accuracy of the
+%		layer-by-layer approximation. \\ \hline
+%		\textbf{Insight 1b}        &
+%		Symbols capture dependency information, allowing terms to
+%		``cancel,'' and thus reducing approximation errors. \\ \hline
 	\end{tabular}
 \end{table}
 
@@ -176,10 +177,29 @@ approximations for the output neurons, e.g. $ n_{3,1} $ and $ n'_{3,1} $ in
 Figure~\ref{fig:subbed_nnets_intro}, and then subtracts them to approximate the
 difference. In our
 new technique, we first approximate the difference between the neurons of the
-first layers, e.g. we compute an approximation for $ n_{1,1} - n'_{1,1} $ and $
-n_{1,2} - n'_{1,2} $. Then we use this result to approximate $ n_{2,1} - n'_{2,1}
-$ and $ n_{2,2} - n'_{2,2} $, and repeat until the final output layer. Our
+first layers, e.g. we compute an approximation for $ n'_{1,1} - n_{1,1} $ and $
+n'_{1,2} - n_{1,2} $. Then we use this result to approximate $ n'_{2,1} - n_{2,1}
+$ and $ n'_{2,2} - n_{2,2} $, and repeat until the final output layer. Our
 intuition is laid out in Insight 1a.
+
+\begin{table}[h]
+	\centering
+	\large
+	\begin{tabular}{|p{0.2\linewidth}|p{0.7\linewidth}|} \hline
+%		\textbf{Hypothesis 1a}      &
+%		Approximating the difference layer-by-layer can significantly improve
+%		accuracy versus existing tools for differential properties. \\ \hline
+%		\textbf{Insight 1a}        &
+%		This approach begins approximating the difference \textit{before}
+%		significant approximation errors accumulate. \\ \hline
+		\textbf{Hypothesis 1b}        &
+		Symbolic approximations can further improve the accuracy of the
+		layer-by-layer approximation. \\ \hline
+		\textbf{Insight 1b}        &
+		Symbols capture dependency information, allowing terms to
+		``cancel,'' and thus reducing approximation errors. \\ \hline
+	\end{tabular}
+\end{table}
 
 Hypothesis 1b suggests a technique for improving the accuracy of the technique
 laid out by Hypothesis 1a. Our intuition, described in Insight 1b, is inspired by
@@ -221,7 +241,8 @@ activation functions are vital for accuracy.
 %best alternative technique.
 
 \section{Contributions}
-This dissertation tests the above hypotheses by proposing four novel techniques
+This dissertation tests the above hypotheses by proposing and evaluating four
+novel techniques
 for \textit{accurate} and \textit{general} differential verification of deep
 neural networks. The first two techniques implement the ideas suggested by
 Hypotheses 1a and 1b, which aim to improve the accuracy when approximating the
@@ -238,7 +259,8 @@ difference between two structurally similar neural networks by approximating
 their difference layer-by-layer. To implement such a technique, we make two key
 intellectual contributions. First, we formally derive equations that relate the
 intermediate computations of the two neural networks, thus allowing the
-layer-by-layer approximation. We then use \textit{interval analysis} to bound these
+layer-by-layer approximation. We then use \textit{interval analysis} to
+rigorously bound these
 equations, resulting in an over-approximation on the difference between the two
 networks. Second, we develop a novel refinement technique, which can
 iteratively improve the accuracy of the computed approximation. We
@@ -263,7 +285,8 @@ The third technique that we propose improves the accuracy of approximations for
 neural networks with non-standard activation functions (thus improving
 generality) by automatically synthesizing linear approximations. To implement
 this technique, we develop a novel approach that combines efficient (unsound) heuristics
-with a nonlinear SMT solver to guarantee soundness. This technique is \textit{online}
+with a nonlinear SMT solver to guarantee soundness. We call this technique
+\textit{online}
 because we directly call SMT solvers to synthesize the linear approximations. We compare
 our synthesis approach with hand-crafted approximations, and demonstrate significant
 improvements in accuracy, thus confirming Hypothesis 2.
@@ -273,7 +296,7 @@ A key limitation of the third technique is its online nature. The use of solvers
 incurs a significant runtime overhead when attempting to prove a given property. The
 final technique that we propose again improves generality, but
 alleviates the runtime overhead by performing the synthesis \textit{offline}.
-Whereas the third technique directly uses a solver to compute the linear
+Whereas the third technique directly uses the SMT solver to compute the linear
 approximation, this technique synthesizes a \textit{static imperative program}
 that computes linear approximations. Since the synthesized program does not call
 expensive solvers, it computes linear approximations several orders of magnitude

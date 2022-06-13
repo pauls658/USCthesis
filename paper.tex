@@ -160,7 +160,7 @@
 %%% draft mode / toggle commands %%%
 \usepackage{etoolbox}
 \newtoggle{draft}
-\settoggle{draft}{true} % change toggle for draft or final versions
+\settoggle{draft}{false} % change toggle for draft or final versions
 
 \iftoggle{draft}{
   % if 'draft' toggle is true
@@ -201,8 +201,8 @@
 
 %%% preface %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{preface}
-  \prefacesection{Dedication}
-  \input{dedication.tex}
+%  \prefacesection{Dedication}
+%  \input{dedication.tex}
 
   \prefacesection{Acknowledgements}
   \input{acknowledgements.tex}
